@@ -16,10 +16,16 @@ Your contributions, feedback, and suggestions are highly appreciated. If you enc
 
 ## Dataset Availability
 
-This project provides training datasets and independent test sets for researchers to explore further. All data resources can be accessed in the [Datasets](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Datasets#dataset) section. Detailed information on methods for extracting feature representations from protein sequences can be found in the published research paper (DOI: https://doi.org/10.1093/bib/bbad534), as well as in the corresponding GitHub repository: [Feature Representation for LLMs](https://github.com/yujuan-zhang/feature-representation-for-LLMs?tab=readme-ov-file#feature-representation-model).
+This project provides training datasets and independent test sets for researchers to explore further. All data resources can be accessed in the [Datasets](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Datasets#dataset) section. Detailed information on methods for extracting feature representations from protein sequences can be found in the published research paper (DOI: https://doi.org/10.1093/bib/bbad534), as well as in the corresponding GitHub repository: [Feature Representation for LLMs](https://github.com/yujuan-zhang/feature-representation-for-LLMs?tab=readme-ov-file#feature-representation-model). For detailed information on the extraction of feature embeddings for specific proteins, please refer to the Python library protloc-mex-x (https://pypi.org/project/protloc-mex-x/).
 
 ## Models
 
 This project encompasses a series of models, including [ESM2_AMPS](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Models/ESM2_AMPS), [ESM2_AMP_CSE](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Models/ESM2_AMP_CSE), and [ESM2_DPM](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Models/ESM2_DPM), aimed at providing comprehensive support for predicting protein interactions. Example inference code for each model is provided within their respective directories, while the required model weight files can be downloaded from the project's corresponding [figshare](https://figshare.com/account/items/28378157) page.
+
+## Work Environment Setup
+
+To ensure that you can replicate our work from the paper accurately, we recommend using the following work environment:   
+- Python version: 3.11.4
+- protloc-mex-x version: 0.0.13
 
 **Important Note**: As the associated research papers are officially published, this project will continuously update and improve to better serve the scientific research community.
