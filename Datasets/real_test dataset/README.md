@@ -1,2 +1,2 @@
 # real_test dataset
-real_test dataset 中所有蛋白质序列信息均来自于UniProt Database(https://www.uniprot.org/)
+All protein sequence information in the real_test dataset is sourced from the UniProt Database (https://www.uniprot.org/).
