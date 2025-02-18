@@ -28,4 +28,12 @@ To ensure that you can replicate our work from the paper accurately, we recommen
 - Python version: 3.11.4
 - protloc-mex-x version: 0.0.13
 
+## Methods
+
+### Feature representation
+The proteins' feature representation used the pre-trained protein model ESM2 developed by Meta company and placed on Hugging Face. For more details, please search in https://huggingface.co/facebook/esm2_t33_650M_UR50D. Besides, we used [protloc-mex-x](https://pypi.org/project/protloc_mex_X/) which our team developed, containing detail for 'cls','mean', 'eos','segment 0-9','pho' feature representation from ESM2.
+Then, we used function(pd.merge) from pandas python library.
+
+The initial protein pair features input to the Transformer encoder are constructed using the following method through a DataLoader. For each sample (i.e., a protein pair), the features are organized into a 2D matrix based on their different characteristics. If N features are selected, each feature has a dimensionality of 1280, resulting in a feature matrix of size N*1280 for each sample.
+
 **Important Note**: As the associated research papers are officially published, this project will continuously update and improve to better serve the scientific research community.
