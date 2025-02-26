@@ -1,6 +1,6 @@
 
 
-# ESM2_AMP
+# ESM2_AMP: an Interpretable Framework for Protein-protein Interactions Prediction and Biological Mechanism Discovery
 
 ## Introduction
 
