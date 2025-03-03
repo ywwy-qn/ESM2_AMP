@@ -43,7 +43,8 @@ During model training, the **AdamW** algorithm and **Optuna** are used for hyper
 ### Model evaluation
 
 During the model evaluation phase, multiple metrics such as **Accuracy**, **MCC**, **Recall**, **F1 score**, and **Precision** are used to assess the model's performance.The evaluation metrics and calculation methods are shown in Equation: 
-     ■(Accuracy =(TP+TN)/(TP+TN+FP+FN)@Recall=TP/(TP+FN)@Precision= TP/(TP+FP)@F1=2×(Precision×Recall)/(Precision+Recall)@MCC=(TP×TN-FP×FN)/√((TP+FP)(TP+FN)(TN+FP)(TN+FN) ))
+     ![529764fd-a8fb-4fa6-a409-2c1275bc97bf](https://github.com/user-attachments/assets/295bc8cb-6ae6-406c-8faf-c84f404d42c7)
+
 
 
 
