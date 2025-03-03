@@ -43,7 +43,20 @@ During model training, the **AdamW** algorithm and **Optuna** are used for hyper
 ### Model evaluation
 
 During the model evaluation phase, multiple metrics such as **Accuracy**, **MCC**, **Recall**, **F1 score**, and **Precision** are used to assess the model's performance.The evaluation metrics and calculation methods are shown in Equation: 
-     ![529764fd-a8fb-4fa6-a409-2c1275bc97bf](https://github.com/user-attachments/assets/295bc8cb-6ae6-406c-8faf-c84f404d42c7)
+
+![529764fd-a8fb-4fa6-a409-2c1275bc97bf](https://github.com/user-attachments/assets/295bc8cb-6ae6-406c-8faf-c84f404d42c7)
+
+
+### Attention-based Explainable Analysis
+
+Both models within the ESM2_AMP framework utilize the multi-head attention mechanism of the Transformer encoder. By leveraging the weight matrix allocation in the multi-head attention mechanism, the attention weights corresponding to the sample features are extracted, and their feature importance is calculated and quantified. The detailed process will be updated in subsequent article publications.
+
+### Feature attribution interpretable method
+
+#### model constructing
+The features obtained from ESM2 are fed into an autoencoder for dimensionality reduction to derive a new feature representation, which is then input into a random forest model. This process is named AE_RF and serves as the underlying model for Tree SHAP.
+
+**AE pretraining**
 
 
 
