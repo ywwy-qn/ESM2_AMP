@@ -41,7 +41,7 @@ Get all the required features:
  ```python
  feature_columns = []
  patterns_f = [r'ESM2_cls\d+', r'ESM2_eos\d+', r'ESM2_mean\d+']
- patterns_f += [f'ESM2_segment{i}_mean\d+' for i in range(10)]  # 添加ESM2_segment0到9的模式
+ patterns_f += [f'ESM2_segment{i}_mean\d+' for i in range(10)]
  for pattern in patterns_f:
      for col in df_represent.columns:
          if re.match(pattern, col):
