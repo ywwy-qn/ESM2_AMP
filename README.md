@@ -27,8 +27,19 @@ This project provides training datasets and independent test sets for researcher
 ## Methods
 
 ### Feature representation
-The proteins' feature representation used the pre-trained protein model ESM2 developed by Meta company and placed on Hugging Face. For more details, please search in https://huggingface.co/facebook/esm2_t33_650M_UR50D. Besides, we used [protloc-mex-x](https://pypi.org/project/protloc_mex_X/) which our team developed, containing detail for 'cls','mean', 'eos','segment 0-9','pho' feature representation from ESM2.
-Then, we used function(pd.merge) from pandas python library.
+The proteins' feature representation used the pre-trained protein model ESM2 developed by Meta company and placed on Hugging Face. For more details, please search in https://huggingface.co/facebook/esm2_t33_650M_UR50D. Besides, we used [protloc-mex-x](https://pypi.org/project/protloc_mex_X/) which our team developed, containing detail for 'cls','mean', 'eos','segment 0-9' feature representation from ESM2.
+'''python
+tokenizer = AutoTokenizer.from_pretrained(modelPath + "/esm2_t33_650M_UR50D")
+model = AutoModelForMaskedLM.from_pretrained(modelPath + "/esm2_t33_650M_UR50D", output_hidden_states=True)
+protein_sequence_df = pd.read_excel(excel_file_path)  # /'cpu', simply replace 'auto' with 'cuda'/'cpu'
+feature_extractor = Esm2LastHiddenFeatureExtractor(tokenizer, model,
+                                                   compute_cls=True, compute_eos=True, compute_mean=True,
+                                                   compute_segments=True)
+print(f"{feature_extractor.device}")
+
+Then, we used function pd.merge() from the pandas Python package to concatenate data based on the different features required by each model. Taking the segment local features required by the ESM2_AMPS model as an example:
+
+
 
 The initial protein pair features input to the Transformer encoder are constructed using the following method through a DataLoader. For each sample (i.e., a protein pair), the features are organized into a 2D matrix based on their different characteristics. If N features are selected, each feature has a dimensionality of 1280, resulting in a feature matrix of size N*1280 for each sample.
 
