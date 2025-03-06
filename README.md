@@ -61,7 +61,7 @@ The features obtained from ESM2 are fed into an autoencoder for dimensionality r
 ### Related Works
 If you are interested in feature extraction and model interpretation for large language models, you may find our previous work helpful:
 
-- Interpretable feature extraction and dimensionality reduction in ESM2 for protein localization prediction: Link:<https://doi.org/10.1093/bib/bbad534>; GitHub Repository:<https://github.com/yujuan-zhang/feature-representation-for-LLMs>
+- Interpretable feature extraction and dimensionality reduction in ESM2 for protein localization prediction: [Link](https://doi.org/10.1093/bib/bbad534); [GitHub Repositor](https://github.com/yujuan-zhang/feature-representation-for-LLMs)
 
 
 
