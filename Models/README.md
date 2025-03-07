@@ -2,6 +2,7 @@
 
 ## 1. Models Based on Different Feature Selection
 
+**ESM2_AMP** framework initiates by employing **ESM2** to extract features for each protein. These features are then fed into a **Transformer encoder**, which utilizes a self-attention mechanism to comprehensively integrate features from both proteins. This process effectively captures both intra-protein interaction relationships and inter-protein interaction patterns. Ultimately, the integrated features are passed through a **multilayer perceptron (MLP)** classifier to predict the likelihood of interaction between the protein pair.
 Based on different feature integration methods and the ESM2_AMP framework, the ESM2_AMPS and ESM2_AMP_CSE models were developed. The ESM2_AMPS model relies solely on segmented local features, while the ESM2_AMP_CSE model incorporates both global and local features. Additionally, a contrast model, ESM2_DPM, was constructed by extracting only the global sequence pooling features of two proteins. These models aim to explore the roles of local and global features in predicting protein-protein interactions (PPIs), with ESM2_AMPS focusing on local interactions and ESM2_AMP_CSE integrating both local and global information. ESM2_DPM serves as a baseline to evaluate the performance of global features independently.
 
 ### 1.1 ESM2_AMPS Model: Dependent on Local Features
