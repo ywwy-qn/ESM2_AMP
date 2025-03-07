@@ -1,1 +1,2 @@
 # Multi_species_dataset
+Multi_species_dataset is used to evaluate cross-species data prediction and includes three species: C. elegans, D. melanogaster, and E. coli. After filtering, only sequences with lengths between 15 and 4000 amino acids were retained, resulting in 32,885 positive samples and 32,848 negative samples. The file **Samples.xlsx** contains all samples, and the file **Total_proteins.xlsx** includes all proteins involved in the dataset.
