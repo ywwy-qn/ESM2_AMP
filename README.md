@@ -51,6 +51,7 @@ Get all the required features:
 
 
 Then, we used function pd.merge() from the pandas Python package to concatenate data based on the different features required of protein pairs by each model. Taking the features required by the ESM2_AMP_CSE model as an example:
+
 (1) The extracted features mentioned above represent the features of all proteins included in all samples. To obtain the features (ESM2_cls, ESM2_segment0-9, ESM2_eos) of the desired proteins.
  ```python
 feature_columns = []
@@ -110,6 +111,46 @@ This project encompasses a series of models, including [ESM2_AMPS](https://githu
 ### Model training
 
 During model training, the **AdamW** algorithm and **Optuna** are used for hyperparameter tuning to reduce sensitivity to the selection of parameters such as learning rate and weight decay, while GPU acceleration is employed to speed up model training. The **ReLU** activation function is adopted to accelerate model training and achieve better prediction results. Additionally, **He initialization** is applied to mitigate gradient vanishing and explosion issues, thereby improving the model's convergence speed.
+
+(1) Install all required python packages
+ ```python
+ import numpy as np
+ import pandas as pd
+ import torch
+ import torch.nn as nn
+ import torch.optim as optim
+ from torch.nn import TransformerEncoder, TransformerEncoderLayer
+ from torch.optim.lr_scheduler import ReduceLROnPlateau
+ from torch.nn.init import kaiming_normal_
+ from torch.optim import AdamW
+ import optuna
+ import time
+ import logging
+ from sklearn.metrics import accuracy_score, recall_score, f1_score, roc_auc_score
+ import matplotlib.pyplot as plt
+ from sklearn.metrics import matthews_corrcoef
+ from sklearn.model_selection import StratifiedKFold
+ import torch.nn.init as init
+ ```
+
+(If these packages are not installed, follow the code below to install them):
+ ```python
+ pip install numpy pandas torch optuna scikit-learn matplotlib
+ ```
+ Install it on the CLI
+ ```python
+ !pip install numpy pandas torch optuna scikit-learn matplotlib
+ ```
+
+If you are using **Anaconda**, you can also install these packages using **conda**
+ ```python
+ conda install numpy pandas pytorch optuna scikit-learn matplotlib -c pytorch
+ ```
+
+(2) 
+
+
+
 
 ### Model evaluation
 
