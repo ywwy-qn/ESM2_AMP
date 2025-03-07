@@ -10,16 +10,13 @@ import joblib
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 logger = logging.getLogger(__name__)
 
-
 X = feature_all.drop(negative_infor.columns, axis=1)
 y = feature_all[['Label']]
 
 # Divide the training set and test set
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
-
 y_train = y_train.values.ravel()
 y_test = y_test.values.ravel()
-
 results_df = pd.DataFrame(columns=["trial", "n_estimators", "max_depth", "min_samples_split",
                                    "min_samples_leaf", "max_features", "bootstrap", "score"])
 
@@ -44,7 +41,6 @@ def objective(trial):
     )
     
     score = cross_val_score(model, X_train, y_train, cv=5).mean()  # 使用五折交叉验证计算平均得分
-    
     results_df.loc[len(results_df)] = [
         trial.number,
         n_estimators,

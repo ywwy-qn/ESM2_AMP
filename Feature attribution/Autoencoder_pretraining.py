@@ -1,11 +1,9 @@
 # from torch.nn import init
-
 import numpy as np
 import pandas as pd
 import re
 import os
 import torch
-
 from torch.utils.data import Dataset, DataLoader
 import torch.nn as nn
 import torch.optim as optim
@@ -13,13 +11,10 @@ from torch.nn.utils import spectral_norm
 from sklearn.model_selection import KFold
 from torch.optim import AdamW
 import torch.nn.init as init
-
 import optuna
 import json
 from torch.utils.data import TensorDataset
 from torch.optim.lr_scheduler import ReduceLROnPlateau
-
-
 import logging
 
 def setup_logger(name, log_file, level=logging.INFO):
@@ -42,9 +37,7 @@ def setup_logger(name, log_file, level=logging.INFO):
 
 log_filename = 'AutoEncoder_pretaining.log'
 full_log_path = os.path.join(save_path, log_filename)
-
 logger = setup_logger('AutoEncoder_Training', full_log_path)
-
 logger.info('beginning')
 feature_all = np.load(open_path + '/pan_data_protein_reshaped/pan_data_protein_reshaped/pan_data_protein_cls_segment0-9_eos_reshaped.npy')
 
@@ -63,8 +56,8 @@ class Swish(nn.Module):
     def forward(self, x):
         return x * torch.sigmoid(self.beta * x)
 
-swish = Swish(trainable_beta=True)
 
+swish = Swish(trainable_beta=True)
 class ResBlock(nn.Module):
     def __init__(self, in_dim, out_dim):
         super(ResBlock, self).__init__()
@@ -86,12 +79,12 @@ class ResBlock(nn.Module):
         out += residual
         return out
 
+
 class AutoEncoder(nn.Module):
     def __init__(self, input_dim=1280, latent_dim=150):
         super(AutoEncoder, self).__init__()
 
         encoder_layer_dims = [input_dim, 512, 256]
-        
         self.fc_latent = spectral_norm(nn.Linear(encoder_layer_dims[-1], latent_dim), n_power_iterations=5)
         
         self.encoder = nn.ModuleList()
@@ -122,6 +115,7 @@ class AutoEncoder(nn.Module):
         reconstructed = self.decode(latent_representation)
         return latent_representation, reconstructed
     
+
 def loss_function(recon_x, x):
     recon_loss = nn.MSELoss(reduction='mean')(recon_x, x)
     return recon_loss
@@ -189,7 +183,6 @@ def train_AutoEncoder(trial, flattened_data, n_splits=5):
     return total_loss / n_splits
 
 
-
 print('Optuna')
 def objective(trial):
     return train_AutoEncoder(trial, flattened_data)
@@ -201,6 +194,3 @@ print('saving')
 best_model_weights = study.best_trial.user_attrs['model_weights']
 torch.save(best_model_weights, save_path + '/AutoEncoder_model.pth')
 logger.info("save to AutoEncoder_model.pth")
-
-
-

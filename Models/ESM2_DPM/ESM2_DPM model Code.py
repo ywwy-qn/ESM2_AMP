@@ -1,4 +1,3 @@
-
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -21,9 +20,7 @@ class CustomDataset(torch.utils.data.Dataset):
     def __init__(self, data_features, data_label):
 
         self.features = torch.tensor(data_features.values).float()
-
         assert len(data_features) == len(data_label), "The sample number of features and label data does not match!"
-
         self.labels = torch.tensor(data_label).float()
 
     def __len__(self):
@@ -81,12 +78,9 @@ def evaluate_model(model, dataloader, criterion, device):
             y_pred_list.extend(predictions)
             y_true_list.extend(labels.cpu().numpy())
             
-
-
     all_outputs2 = torch.cat(all_outputs, dim=0)
     all_labels2 = torch.cat(all_labels, dim=0)
     auc = roc_auc_score(all_labels2.cpu().numpy(), all_outputs2.cpu().numpy())
-
     mcc = matthews_corrcoef(y_true_list, y_pred_list)
     accuracy = accuracy_score(y_true_list, y_pred_list)
     recall = recall_score(y_true_list, y_pred_list, pos_label=1)
@@ -97,33 +91,22 @@ def evaluate_model(model, dataloader, criterion, device):
     return avg_loss, accuracy, recall, f1, auc, mcc, precision
 
 
-
-
-model = DNN().float().to(device)
-
-
 # Load the trained model weights
+model = DNN().float().to(device)
 checkpoint = torch.load("ESM2_DPM_checkpoint.pth")
 model.load_state_dict(checkpoint['model_state_dict'])
 
-
 X_test = test_data_features
-y_test = test_data_label['Label']
-        
+y_test = test_data_label['Label']  
 y_test = y_test.values.reshape(-1, 1)
-
-        
+     
 test_dataset = CustomDataset(X_test, y_test)
-
-
 test_dataloader = torch.utils.data.DataLoader(test_dataset, batch_size=32, shuffle=False)
-
 
 
 # Evaluate the model on the test dataset
 criterion = nn.BCEWithLogitsLoss()
 avg_loss, accuracy, recall, f1, auc, mcc, precision = evaluate_model(model, test_dataloader, criterion, device)
-
 print(f"avg_loss: {avg_loss:.4f}")
 print(f"accuracy: {accuracy:.4f}")
 print(f"recall: {recall:.4f}")
@@ -136,7 +119,6 @@ print(f"Precision: {precision:.4f}")
 model.eval()
 predictions = []
 probabilities = []
-
 with torch.no_grad():
     for features, _ in test_dataloader:
         features = features.to(device)
@@ -146,15 +128,9 @@ with torch.no_grad():
         predictions.extend(preds)
         probabilities.extend(probs)
 
-
-
 predictions_df = pd.DataFrame({
     "Label": test_data_label["Label"],
     "Prediction": [p[0] for p in predictions],
     "Probability": [p[0] for p in probabilities]
 })
 predictions_df.to_csv(os.path.join(save_path, 'test_predictions_ESM2_DPM.csv'), index=False)
-
-
-
-
