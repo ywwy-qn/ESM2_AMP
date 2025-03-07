@@ -211,7 +211,7 @@ The features obtained from ESM2 are fed into an autoencoder for dimensionality r
 **AE pretraining**
 We performed dimensionality reduction on the extracted ESM2 protein feature representations, which originally had 1280 dimensions per feature, with the Autoencoder's hidden layer dimension set to 150. It is necessary to restructure the original feature dimensions to fit the input requirements of the Autoencoder.
 
-1.Taking the original 2D matrix of size N15360 as an example, where N is the number of proteins and 15360 is the sum of the 1280 dimensions of `ESM2_cls`, `ESM2_eos`, and `ESM2_segment0-9` features, use the `reshape()` function to restructure it into N*12*1280.
+1.Taking the original 2D matrix of size N15360 as an example, where N is the number of proteins and 15360 is the sum of the 1280 dimensions of `ESM2_cls`, `ESM2_eos`, and `ESM2_segment0-9` features, use the `reshape()` function to restructure it into N * 12 * 1280.
 
  ```python
  flattened_data = feature_all.reshape(-1, 1280)
@@ -223,7 +223,7 @@ We performed dimensionality reduction on the extracted ESM2 protein feature repr
      z, _ = ae_model(data_feature_tensor)
  z_npy = z.cpu().numpy()
  ```
-3.The obtained z_npy is a 12N * 150 dimensional vector, where the first dimension represents all feature types of all proteins, and the second dimension represents the 150-dimensional vector of each feature. This step restructures it so that the first dimension corresponds to each protein, resulting in an N * 1800 matrix, where 1800 is derived from 12*150.
+3.The obtained z_npy is a 12N * 150 dimensional vector, where the first dimension represents all feature types of all proteins, and the second dimension represents the 150-dimensional vector of each feature. This step restructures it so that the first dimension corresponds to each protein, resulting in an N * 1800 matrix, where 1800 is derived from 12 * 150.
 
  ```python
  combined_features_list = []
@@ -325,6 +325,14 @@ We performed dimensionality reduction on the extracted ESM2 protein feature repr
  # Initialize SHAP and calculate shap_values
  shap_values = init_shap_analysis(model, X_test)
  ```
+
+### Identification and computational methods of functional amino acid regions
+To investigate the potential correlation between feature attention weights and specific residues or residue regions, a detailed analysis was conducted on the ESM2_AMPS model, which relies solely on segment local features. Using samples from the real_test dataset, the top three features with the highest weight values in each sample were identified, and the proportion of functional amino acid sequences they covered was calculated. For comparison, the three features with the lowest weights were selected as the negative control group. The functional amino acid region information for each protein in the samples was obtained from the UniProt database.
+
+The types of functional amino acid regions we selected include ***Domain***, ***Region***, ***Compositional bias***, ***Repeat***, and ***Motif***.
+```cmd
+The detailed process will be updated in subsequent article publications.
+```
 
 
 ### Related Works
