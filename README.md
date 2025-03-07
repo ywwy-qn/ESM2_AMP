@@ -289,7 +289,7 @@ We performed dimensionality reduction on the extracted ESM2 protein feature repr
  # delete redundant information
  protein_pairs = protein_pairs.drop(columns=['new_name1', 'new_name2'])
  ```
-(5) Random Forest model design and train. Tree SHAP is an interpretability method that relies on decision tree models, and we adopt the Random Forest model. The model design code can be found in the RF file within the **Feature Attribution** module. The process of training the RF model and saving the model weights is as follows:
+(5) Random Forest model design and train. Tree SHAP is an interpretability method that relies on decision tree models, and we adopt the Random Forest model. The model design code can be found in the [RF](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Feature%20attribution/RF.py) file within the **Feature Attribution** module. The process of training the RF model and saving the model weights is as follows:
  ```python
  study = optuna.create_study(direction='maximize')
  # operation optimization
