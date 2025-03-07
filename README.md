@@ -255,6 +255,85 @@ We performed dimensionality reduction on the extracted ESM2 protein feature repr
                  combined_features[col] = features.iloc[0][col]
      combined_features_list.append(combined_features)
  ```
+(4) Previously, we obtained dimensionality-reduced data at the protein level. Since the input for the random forest model requires features at the protein pair level, this step involves concatenating the dimensionality-reduced protein features based on the protein pair samples.
+ ```python
+ protein_pairs = pd.merge(protein_pairs, protein_features, how='left',
+                                  left_on='Protein1', right_on='new_name')
+ # Rename the column name
+ new_column_names1 = []
+ for name in protein_pairs.columns:
+     if name == 'new_name':
+         new_name = 'new_name1'
+     elif name in ['Protein1', 'Protein2', 'Label', 'Pairs']:
+         new_name = name
+     else:
+         new_name = '1_' + name
+     new_column_names1.append(new_name)
+ protein_pairs.columns = new_column_names1
+
+ protein_pairs = pd.merge(protein_pairs, protein_features, how='left',
+                                  left_on='Protein2', right_on='new_name')
+ # Rename the column name
+ new_column_names2 = []
+ for name in protein_pairs.columns:
+     if re.match('1_', name):
+         new_name2 = name
+     elif name in ['Protein1', 'Protein2', 'Label', 'Pairs', 'new_name1']:
+         new_name2 = name
+     elif name == 'new_name':
+         new_name2 = 'new_name2'
+     else:
+         new_name2 = '2_' + name
+     new_column_names2.append(new_name2)
+ protein_pairs.columns = new_column_names2
+ # delete redundant information
+ protein_pairs = protein_pairs.drop(columns=['new_name1', 'new_name2'])
+ ```
+(5) Random Forest model design and train. Tree SHAP is an interpretability method that relies on decision tree models, and we adopt the Random Forest model. The model design code can be found in the RF file within the **Feature Attribution** module. The process of training the RF model and saving the model weights is as follows:
+ ```python
+ study = optuna.create_study(direction='maximize')
+ # operation optimization
+ study.optimize(objective, n_trials=30)
+ # Get the best parameters
+ best_params = study.best_params
+ # The final model is trained using the optimal parameters
+ best_model = RandomForestClassifier(**best_params, random_state=42)
+ best_model.fit(X_train, y_train)
+ # save model
+ joblib.dump(best_model, outputPath + '/best_rf_model.pkl')
+
+ # Save the best parameters to Excel file
+ df_best_params = pd.DataFrame([best_params])
+ df_best_params.to_excel(outputPath + '/best_rf_params.xlsx', index=False)
+
+ # Save results of all trials to Excel file
+ results_df.to_excel(outputPath + '/trials_results.xlsx', index=False)
+ ```
+(6) Tree SHAP feature importance calculation. The dimensionality-reduced protein pair data obtained above will be input into the trained RF model for inference, serving as the underlying model to calculate the SHAP values.
+ ```python
+ import shap
+ import matplotlib.pyplot as plt
+ from joblib import load
+
+ # Initialize SHAP explainer and calculate shap_values
+ def init_shap_analysis(model, X_train):
+     """Initialize the SHAP TreeExplainer and return shap values."""
+     # Select a random subset of the data for SHAP background (speed optimization)
+     np.random.seed(0)
+     background_index = np.random.choice(X_train.shape[0], size=200, replace=False)
+     background_data = X_train.iloc[background_index].values
+     # Initialize SHAP TreeExplainer
+     explainer = shap.TreeExplainer(model, background_data)
+     shap_values = explainer.shap_values(X_train)
+     return shap_values
+ # Model import
+ model = load(r'D:\Aywwy\wy\other_dataset\TreeSHAP\AE_RF\rf_train_result\split_ae_rf_trat253570414\best_rf_model.pkl')
+ # Initialize SHAP and calculate shap_values
+ shap_values = init_shap_analysis(model, X_test)
+ ```
+
+
+
 
 
 
