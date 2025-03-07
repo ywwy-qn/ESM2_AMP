@@ -147,16 +147,68 @@ If you are using **Anaconda**, you can also install these packages using **conda
  conda install numpy pandas pytorch optuna scikit-learn matplotlib -c pytorch
  ```
 
-(2) 
+(2) Input data and create CustomDataset class.
+ ```python
+ class CustomDataset(torch.utils.data.Dataset):
+     def __init__(self, data_features, data_label, reshape_shape=(20, 1280)):
+         self.features = torch.tensor(data_features.values.reshape(-1, *reshape_shape)).float()
+         assert len(data_features) == len(data_label), "The sample number of features and label data does not match."
+         self.labels = torch.tensor(data_label).float()
+     def __len__(self):
+         return len(self.features)
 
+     def __getitem__(self, idx):
+         return self.features[idx], self.labels[idx]
+ ```
+(3) Model Design (Specific information about the [ESM2_AMPS](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Models/ESM2_AMPS), [ESM2_AMP_CSE](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Models/ESM2_AMP_CSE), and [ESM2_DPM](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Models/ESM2_DPM) models can be found in the Model section).
 
+(4) Model training
+ ```python
+ # Gets the hyperparameter section
+ lr = trial.suggest_loguniform('lr', 1e-5, 1e-3)  # 使用loguniform分布更合理
+ weight_decay = trial.suggest_loguniform('weight_decay', 1e-4, 1e-2)
 
+ # Part of hyperparameter optimization
+ criterion = nn.BCEWithLogitsLoss()
+ optimizer = AdamW(model.parameters(), lr=lr, weight_decay=weight_decay)
+ scheduler = ReduceLROnPlateau(optimizer, mode='min', factor=0.1, patience=5, verbose=True, min_lr=1e-8)
+ ```
 
 ### Model evaluation
 
-During the model evaluation phase, multiple metrics such as **Accuracy**, **MCC**, **Recall**, **F1 score**, and **Precision** are used to assess the model's performance.The evaluation metrics and calculation methods are shown in Equation: 
+During the model evaluation phase, multiple metrics such as **Accuracy**, **MCC**, **Recall**, **F1 score**, and **Precision** are used to assess the model's performance.The evaluation metrics and calculation methods are shown in code: 
 
-![529764fd-a8fb-4fa6-a409-2c1275bc97bf](https://github.com/user-attachments/assets/295bc8cb-6ae6-406c-8faf-c84f404d42c7)
+ ```python
+val_loss = 0.0
+model.eval()
+with torch.no_grad():
+   y_pred_list = []
+   y_true_list = []
+   all_outputs = []
+   all_labels = []
+
+for features, labels in val_dataloader:
+   features, labels = features.to(device), labels.float().to(device)
+   outputs = model(features)
+   all_outputs.append(outputs)
+   all_labels.append(labels)
+   loss = criterion(outputs, labels)
+   val_loss += loss.item()
+   predictions = outputs.sigmoid().cpu().numpy() > 0.5
+   y_pred_list.extend(predictions)
+   y_true_list.extend(labels.cpu().numpy())
+                
+ # Calculating AUC
+ all_outputs2 = torch.cat(all_outputs, dim=0)
+ all_labels2 = torch.cat(all_labels, dim=0)
+ auc = roc_auc_score(all_labels2.cpu().numpy(), all_outputs2.cpu().numpy())
+
+ # Calculating MCC, Accuracy, Recall, F1 score
+ mcc = matthews_corrcoef(y_true_list, y_pred_list)
+ accuracy = accuracy_score(y_true_list, y_pred_list)
+ recall = recall_score(y_true_list, y_pred_list, pos_label=1)
+ f1 = f1_score(y_true_list, y_pred_list, pos_label=1)
+ ```
 
 
 ### Attention-based Explainable Analysis
@@ -169,6 +221,42 @@ Both models within the ESM2_AMP framework utilize the multi-head attention mecha
 The features obtained from ESM2 are fed into an autoencoder for dimensionality reduction to derive a new feature representation, which is then input into a random forest model. This process is named AE_RF and serves as the underlying model for Tree SHAP.
 
 **AE pretraining**
+We performed dimensionality reduction on the extracted ESM2 protein feature representations, which originally had 1280 dimensions per feature, with the Autoencoder's hidden layer dimension set to 150. It is necessary to restructure the original feature dimensions to fit the input requirements of the Autoencoder.
+(1) Taking the original 2D matrix of size N15360 as an example, where N is the number of proteins and 15360 is the sum of the 1280 dimensions of ESM2_cls, ESM2_eos, and ESM2_segment0-9 features, use the reshape() function to restructure it into N*12*1280.
+ ```python
+ flattened_data = feature_all.reshape(-1, 1280)
+ ```
+(2) AE model design and pretraining (For detailed model information, refer to the [Autoencoder_pretraining](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Feature%20attribution/Autoencoder_pretraining.py) code in the **Feature attribution** module). After obtaining the model weight file, input the data and set the hidden layer output to obtain the dimensionality-reduced features corresponding to the proteins.
+ ```python
+ with torch.no_grad():
+     z, _ = ae_model(data_feature_tensor)
+ z_npy = z.cpu().numpy()
+ ```
+(3) The obtained z_npy is a 12N * 150 dimensional vector, where the first dimension represents all feature types of all proteins, and the second dimension represents the 150-dimensional vector of each feature. This step restructures it so that the first dimension corresponds to each protein, resulting in an N * 1800 matrix, where 1800 is derived from 12*150.
+ ```python
+ combined_features_list = []
+ for protein in tqdm(protein_names_li, desc="Processing Proteins", unit="protein"):
+     related_rows = data_all[data_all['Name'].str.contains(protein)]
+     if related_rows.empty:
+         print(f"Warning: No rows found for protein {protein}.")
+         continue
+
+     suffixes = related_rows['Name'].str.split('_').str[-1]
+     combined_features = {}
+
+     for suffix in suffixes:
+         matching_rows = related_rows[related_rows['Name'].str.endswith(suffix)]
+         features = matching_rows.iloc[:, 1:].copy()
+         num_features = features.shape[1]
+         new_columns = [f"{suffix}_{i}" for i in range(num_features)]
+         features.columns = new_columns
+         for col in features.columns:
+             if col not in combined_features:
+                 combined_features[col] = features.iloc[0][col]
+     combined_features_list.append(combined_features)
+ ```
+
+
 
 ### Related Works
 If you are interested in feature extraction and model interpretation for large language models, you may find our previous work helpful:
