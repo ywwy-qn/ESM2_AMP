@@ -6,11 +6,11 @@ Based on different feature integration methods and the ESM2_AMP framework, the E
 
 ### 1.1 ESM2_AMPS Model: Dependent on Local Features
 
-In the ESM2_AMPS model, the segmented local features of protein pairs obtained by fine-tuning the ESM2 protein large language model are selected and labeled as `"A_segment0-9"` and `"B_segment0-9"`. These features are concatenated into a matrix $ E \in \mathbb{R}^{20 \times 1280} $ and fed into a Transformer encoder. The self-attention mechanism within the encoder fuses these features, capturing intra- and inter-protein interaction patterns. For more details, see [work details](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Models/ESM2_AMPS/ESM2_AMPS%20model%20Code.py).
+In the ESM2_AMPS model, the segmented local features of protein pairs obtained by fine-tuning the ESM2 protein large language model are selected and labeled as `"A_segment0-9"` and `"B_segment0-9"`. These features are concatenated into a matrix $E \in \mathbb{R}^{20 \times 1280}$ and fed into a Transformer encoder. The self-attention mechanism within the encoder fuses these features, capturing intra- and inter-protein interaction patterns. For more details, see [work details](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Models/ESM2_AMPS/ESM2_AMPS%20model%20Code.py).
 
 ### 1.2 ESM2_AMP_CSE Model: Dependent on Global and Local Features
 
-The ESM2_AMP_CSE model combines segmented local features (`ESM2_segment0-9`) with global features (`ESM2_cls` and `ESM2_eos`). The features are concatenated in the following order: `A_cls`, `A_segment0-9`, `A_eos`, followed by `B_cls`, `B_segment0-9`, `B_eos`. The feature matrix for each sample input to the Transformer encoder is $ E \in \mathbb{R}^{24 \times 1280} $. Subsequently, the features are fused through the self-attention mechanism. For more details, see [work details](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Models/ESM2_AMP_CSE/ESM2_AMP_CSE%20model%20Code.py).
+The ESM2_AMP_CSE model combines segmented local features (`ESM2_segment0-9`) with global features (`ESM2_cls` and `ESM2_eos`). The features are concatenated in the following order: `A_cls`, `A_segment0-9`, `A_eos`, followed by `B_cls`, `B_segment0-9`, `B_eos`. The feature matrix for each sample input to the Transformer encoder is $E \in \mathbb{R}^{24 \times 1280}$. Subsequently, the features are fused through the self-attention mechanism. For more details, see [work details](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Models/ESM2_AMP_CSE/ESM2_AMP_CSE%20model%20Code.py).
 
 ### 1.3 Contrast Experiment: ESM2_DPM Model Dependent Only on Global Pooling Features
 
