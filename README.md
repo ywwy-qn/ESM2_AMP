@@ -199,7 +199,7 @@ for features, labels in val_dataloader:
 Both models within the **ESM2_AMP** framework utilize the multi-head attention mechanism of the Transformer encoder. By leveraging the weight matrix allocation in the multi-head attention mechanism, the attention weights corresponding to the sample features are extracted, and their feature importance is calculated and quantified.
 
 ```cmd
-The detailed process will be updated in subsequent article publications.
+We are currently undergoing peer review, so the code related to this part has not been made available. Please contact the author if needed.
 ```
 
 ### Feature attribution interpretable method
@@ -331,7 +331,7 @@ To investigate the potential correlation between feature attention weights and s
 
 The types of functional amino acid regions we selected include ***Domain***, ***Region***, ***Compositional bias***, ***Repeat***, and ***Motif***.
 ```cmd
-The detailed process will be updated in subsequent article publications.
+We are currently undergoing peer review, so the code related to this part has not been made available. Please contact the author if needed.
 ```
 
 
