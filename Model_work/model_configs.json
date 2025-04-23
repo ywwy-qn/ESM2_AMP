@@ -1,0 +1,26 @@
+{
+    "ESM2_AMPS": {
+        "feature": "seg",
+        "feature_shape": [-1, 20, 1280],
+        "mode": "transformer",
+        "hidden1": 480,
+        "hidden2": 240,
+        "weight": ["Model_work/ESM2_AMPS/model_weigth.pth", "Model_work/ESM2_AMPS/model_weigth.pth", "Model_work/ESM2_AMPS/model_weigth.pth"],
+        "weight_url": "https://figshare.com/ndownloader/files/52341845",
+        "weight_file": "Model_work/ESM2_AMPS/model_weigth.pth"
+    },
+    "ESM2_GRU": {
+        "feature": "seg",
+        "feature_shape": [-1, 20, 1280],
+        "mode": "gru",
+        "hidden1": 590,
+        "hidden2": 255
+    },
+    "ESM2_AMP_CSE": {
+        "feature": "split",
+        "feature_shape": [-1, 24, 1280],
+        "mode": "transformar",
+        "hidden1": 480,
+        "hidden2": 240
+    }
+}

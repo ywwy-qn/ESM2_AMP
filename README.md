@@ -17,8 +17,23 @@ Your contributions, feedback, and suggestions are highly appreciated. If you enc
 ## Work Environment Setup
 
 To ensure that you can replicate our work from the paper accurately, we recommend using the following work environment:   
-- Python version: 3.11.4
+- Python version: 3.10
 - protloc-mex-x version: 0.0.13
+- Pytorch version: 1.12.1
+
+**注意**：如果在protloc-mex-x的安装上出现困难，也可以直接使用该项目中的便捷版protloc-mex-x（here），只需要确保python >= 3.10, torch >= 1.12.1便能够正常使用该项目中基于ESM2_650m的蛋白质序列提取工程。
+
+模型使用
+
+在该项目中我们提供了直接使用**ESM2_AMPS**, **ESM2_AMP_CSE**，**ESM2_GRU**模型的案例：
+
+第一步，克隆该项目至本地
+
+```
+git clone https://github.com/ywwy-qn/ESM2_AMP.git
+```
+
+
 
 ## Dataset Availability
 
@@ -27,177 +42,24 @@ This project provides training datasets and independent test sets for researcher
 ## Methods
 
 ### Feature representation
-The proteins' feature representation used the pre-trained protein model ESM2 developed by Meta company and placed on Hugging Face. For more details, please search in https://huggingface.co/facebook/esm2_t33_650M_UR50D. Besides, we used [protloc-mex-x](https://pypi.org/project/protloc_mex_X/) which our team developed, containing detail for `'cls'`,`'mean'`, `'eos'`,`'segment 0-9'` feature representation from ESM2.
- ```python
- tokenizer = AutoTokenizer.from_pretrained(modelPath + "/esm2_t33_650M_UR50D")
- model = AutoModelForMaskedLM.from_pretrained(modelPath + "/esm2_t33_650M_UR50D", output_hidden_states=True)
- protein_sequence_df = pd.read_excel(excel_file_path)
- feature_extractor = Esm2LastHiddenFeatureExtractor(tokenizer, model,
-                                                    compute_cls=True, compute_eos=True, compute_mean=True,
-                                                    compute_segments=True)
- print(f"{feature_extractor.device}")
- ```
-Get all the required features:
- ```python
- feature_columns = []
- patterns_f = [r'ESM2_cls\d+', r'ESM2_eos\d+', r'ESM2_mean\d+']
- patterns_f += [f'ESM2_segment{i}_mean\d+' for i in range(10)]
- for pattern in patterns_f:
-     for col in df_represent.columns:
-         if re.match(pattern, col):
-             feature_columns.append(col)
- ```
-
-Then, we used function `pd.merge()` from the pandas Python package to concatenate data based on the different features required of protein pairs by each model. Taking the features required by the **ESM2_AMP_CSE** model as an example:
-
-1.The extracted features mentioned above represent the features of all proteins included in all samples. To obtain the features (`ESM2_cls`, `ESM2_segment0-9`, `ESM2_eos`) of the desired proteins.
-
- ```python
-feature_columns = []
-patterns_f = ['Entry', r'ESM2_cls\d+', r'ESM2_eos\d+',  r'ESM2_segment\d+']
-
-for pattern in patterns_f:
-    for col in final_df.columns:
-        if re.match(pattern, col):
-            feature_columns.append(col)
-
-feature_all_reserve1 = final_df[feature_columns]
- ```
-2.The segment local features correspond to amino acid fragments containing actual sequences, numbered sequentially from 0 to 9. The `ESM2_cls` feature represents the feature embedding of the `CLS` token added at the beginning of the sequence, while the `ESM2_eos` feature represents the feature embedding of the `EOS` token appended at the end of the sequence. Therefore, the features should be ordered as `ESM2_cls`, `ESM2_segment0-9`, and `ESM2_eos`.
-
- ```python
- new_index = ['Entry']
- for prefix in ['ESM2_cls', 'ESM2_segment0_mean', 'ESM2_segment1_mean',
-                'ESM2_segment2_mean','ESM2_segment3_mean','ESM2_segment4_mean',
-                'ESM2_segment5_mean','ESM2_segment6_mean','ESM2_segment7_mean','ESM2_segment8_mean',
-                'ESM2_segment9_mean', 'ESM2_eos']:
-     for i in range(1280):
-         col_name = f"{prefix}{i}"
-         if col_name in feature_all_reserve1.columns:
-             new_index.append(col_name)
- feature_all_reserve = feature_all_reserve1[new_index]
- ```
-3.The samples used for PPIs prediction are in the format of protein pairs, named Protein1 and Protein2 respectively. In the protein feature files extracted through the upon steps, the protein column is labeled as Entry. The `pd.merge()` function is used to concatenate the data.
-
- ```python
- protein_pairs = pd.merge(protein_pairs, feature_all_reserve, how='left',
-                                       left_on='Protein1', right_on='Entry')
- new_column_names1 = []
- for name in protein_pairs.columns:
-     if re.match('ESM.', name):
-         new_name = '1_' + name
-     elif name == 'Entry':
-         new_name = 'Entry1'
-     else:
-         new_name = name
-     new_column_names1.append(new_name)
- protein_pairs.columns = new_column_names1
- protein_pairs = pd.merge(protein_pairs, feature_all_reserve, how='left', left_on='Protein2', right_on='Entry')
- new_column_names2 = []
- for name in protein_pairs.columns:
-     if re.match('ESM.', name):
-         new_name2 = '2_' + name
-     else:
-         new_name2 = name
-     new_column_names2.append(new_name2)
- protein_pairs.columns = new_column_names2
- ```
-
-The initial protein pair features input to the Transformer encoder are constructed using the following method through a DataLoader. For each sample (i.e., a protein pair), the features are organized into a 2D matrix based on their different characteristics. If N features are selected, each feature has a dimensionality of 1280, resulting in a feature matrix of size `N*1280` for each sample.
-
+The proteins' feature representation used the pre-trained protein model ESM2 developed by Meta company and placed on Hugging Face. For more details, please search in https://huggingface.co/facebook/esm2_t33_650M_UR50D. Besides, we used [protloc-mex-x](https://pypi.org/project/protloc_mex_X/) which our team developed, containing detail for `'cls'`,`'mean'`, `'eos'`,`'segment 0-9'` feature representation from ESM2. 关于蛋白质序列提取的代码细节请前往这里。
 ### Models
 
 This project encompasses a series of models, including **ESM2_AMPS**, **ESM2_AMP_CSE**, and **ESM2_DPM** ( [Details](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Models/README.md) ), aimed at providing comprehensive support for predicting protein interactions. Example inference code for each model is provided within their respective directories, while the required model weight files can be downloaded from the project's corresponding [figshare](https://figshare.com/articles/dataset/ESM2_AMP/28378157) page.
 
 ### Model training
 
-During model training, the **AdamW** algorithm and **Optuna** are used for hyperparameter tuning to reduce sensitivity to the selection of parameters such as learning rate and weight decay, while GPU acceleration is employed to speed up model training. The **ReLU** activation function is adopted to accelerate model training and achieve better prediction results. Additionally, **He initialization** is applied to mitigate gradient vanishing and explosion issues, thereby improving the model's convergence speed.
+During model training, **Optuna** is primarily employed for hyperparameter selection, with key details as follows:
 
-1.Install all required python packages.
+- In ESM2_AMPS model training process, the learning rate was tuned within the range of 1e-5 to 1e-3, while the weight decay was adjusted between 1e-4 and 1e-2. For the MLP module, the first hidden layer size was varied from 480 to 640 with a step size of 160, and the second hidden layer size was explored from 80 to 320 with a step size of 80. Here are the code details.
+- ESM2_AMP_CSE model maintained these parameters but extended the weight decay range to 1e-4-1e-1. Here are the code details.
+- In ESM2_DPM model training process, the learning rate was tuned within the range of 1e-6 to 1e-5, while the weight decay was adjusted between 1e-3 and 1e-1. For the DNN module, the first hidden layer size varied from 960 to 1280 with a step size of 320, the second hidden layer size was explored from 320 to 640 with a step size of 160, and the last layer was 40 to 160 with 60 steps. Here are the code details.
 
- ```python
- pip install numpy pandas torch optuna scikit-learn matplotlib
- ```
- Install it on the CLI
- ```python
- !pip install numpy pandas torch optuna scikit-learn matplotlib
- ```
-
-If you are using **Anaconda**, you can also install these packages using **conda**
- ```python
- conda install numpy pandas pytorch optuna scikit-learn matplotlib -c pytorch
- ```
-
-2.Input data and create CustomDataset class.
-
- ```python
- class CustomDataset(torch.utils.data.Dataset):
-     def __init__(self, data_features, data_label, reshape_shape=(20, 1280)):
-         self.features = torch.tensor(data_features.values.reshape(-1, *reshape_shape)).float()
-         assert len(data_features) == len(data_label), "The sample number of features and label data does not match."
-         self.labels = torch.tensor(data_label).float()
-     def __len__(self):
-         return len(self.features)
-
-     def __getitem__(self, idx):
-         return self.features[idx], self.labels[idx]
- ```
-3.Model Design (Specific information about the [ESM2_AMPS](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Models/ESM2_AMPS), [ESM2_AMP_CSE](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Models/ESM2_AMP_CSE), and [ESM2_DPM](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Models/ESM2_DPM) models can be found in the Model section).
-
-4.Model training
-
- ```python
- # Gets the hyperparameter section
- lr = trial.suggest_loguniform('lr', 1e-5, 1e-3) 
- weight_decay = trial.suggest_loguniform('weight_decay', 1e-4, 1e-2)
-
- # Part of hyperparameter optimization
- criterion = nn.BCEWithLogitsLoss()
- optimizer = AdamW(model.parameters(), lr=lr, weight_decay=weight_decay)
- scheduler = ReduceLROnPlateau(optimizer, mode='min', factor=0.1, patience=5, verbose=True, min_lr=1e-8)
- ```
-Hyperparameter tuning setting:
-In ESM2_AMPS model training process, the learning rate was tuned within the range of 1e-5 to 1e-3, while the weight decay was adjusted between 1e-4 and 1e-2. For the MLP module, the first hidden layer size was varied from 480 to 640 with a step size of 160, and the second hidden layer size was explored from 80 to 320 with a step size of 80. ESM2_AMP_CSE model maintained these parameters but extended the weight decay range to 1e-4-1e-1. In ESM2_DPM model training process, the learning rate was tuned within the range of 1e-6 to 1e-5, while the weight decay was adjusted between 1e-3 and 1e-1. For the DNN module, the first hidden layer size varied from 960 to 1280 with a step size of 320, the second hidden layer size was explored from 320 to 640 with a step size of 160, and the last layer was 40 to 160 with 60 steps.
-
-Model hyperparameter results are displayed in the Models file: 1 ESM2_AMPS 2 ESM2_AMP_CSE  3 ESM2_DPM
-
-
+Model hyperparameter results are displayed in the Models file:  1.ESM2_AMPS  2.ESM2_AMP_CSE  3.ESM2_DPM
 
 ### Model evaluation
 
-During the model evaluation phase, multiple metrics such as **Accuracy**, **MCC**, **Recall**, **F1 score**, and **Precision** are used to assess the model's performance.The evaluation metrics and calculation methods are shown in code: 
-
- ```python
-val_loss = 0.0
-model.eval()
-with torch.no_grad():
-   y_pred_list = []
-   y_true_list = []
-   all_outputs = []
-   all_labels = []
-
-for features, labels in val_dataloader:
-   features, labels = features.to(device), labels.float().to(device)
-   outputs = model(features)
-   all_outputs.append(outputs)
-   all_labels.append(labels)
-   loss = criterion(outputs, labels)
-   val_loss += loss.item()
-   predictions = outputs.sigmoid().cpu().numpy() > 0.5
-   y_pred_list.extend(predictions)
-   y_true_list.extend(labels.cpu().numpy())
-                
- # Calculating AUC
- all_outputs2 = torch.cat(all_outputs, dim=0)
- all_labels2 = torch.cat(all_labels, dim=0)
- auc = roc_auc_score(all_labels2.cpu().numpy(), all_outputs2.cpu().numpy())
-
- # Calculating MCC, Accuracy, Recall, F1 score
- mcc = matthews_corrcoef(y_true_list, y_pred_list)
- accuracy = accuracy_score(y_true_list, y_pred_list)
- recall = recall_score(y_true_list, y_pred_list, pos_label=1)
- f1 = f1_score(y_true_list, y_pred_list, pos_label=1)
- ```
+During the model evaluation phase, multiple metrics such as **Accuracy**, **MCC**, **Recall**, **F1 score**, and **Precision** are used to assess the model's performance.The evaluation metrics and calculation methods are shown in code. 
 
 
 ### Attention-based Explainable Analysis
