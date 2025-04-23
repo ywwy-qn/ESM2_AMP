@@ -78,8 +78,8 @@ During the model evaluation phase, multiple metrics such as **Accuracy**, **MCC*
 
 Both models within the **ESM2_AMP** framework utilize the multi-head attention mechanism of the Transformer encoder. By leveraging the weight matrix allocation in the multi-head attention mechanism, the attention weights corresponding to the sample features are extracted, and their feature importance is calculated and quantified.
 
-```cmd
-We are currently undergoing peer review, so the code related to this part has not been made available. Please contact the author if needed.
+```html
+Update pending...
 ```
 
 ### Feature attribution interpretable method
@@ -206,8 +206,8 @@ We performed dimensionality reduction on the extracted ESM2 protein feature repr
  shap_values = init_shap_analysis(model, X_test)
  ```
 7. Calculate Gini importance. Compute the Gini index importance for the RF model.
- ```python
-Updating...
+ ```html
+Update pending...
  ```
 8. DNN model design. Integrated Gradient is an interpretability method that relies on decision tree models, and we adopt the DNN model. The model design code can be found in the [DNN](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Feature%20attribution/DNN.py) file within the **Feature Attribution** module. The process of training the DNN model is as follows:
  ```python
@@ -240,16 +240,16 @@ class CustomDataset(Dataset):
         return self.features[idx]
  ```
 9. Integrated Gradient Calculate.
-```python
-Updating...
+```html
+Update pending...
 ```
 
 ### Identification and computational methods of functional amino acid regions
 To investigate the potential correlation between feature attention weights and specific residues or residue regions, a detailed analysis was conducted on the ESM2_AMPS model, which relies solely on segment local features. Using samples from the real_test dataset, the top three features with the highest weight values in each sample were identified, and the proportion of functional amino acid sequences they covered was calculated. For comparison, the three features with the lowest weights were selected as the negative control group. The functional amino acid region information for each protein in the samples was obtained from the UniProt database.
 
 The types of functional amino acid regions we selected include ***Domain***, ***Region***, ***Compositional bias***, ***Repeat***, and ***Motif***.
-```cmd
-Updating...
+```html
+Update pending...
 ```
 
 
