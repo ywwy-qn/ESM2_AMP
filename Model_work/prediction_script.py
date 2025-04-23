@@ -3,6 +3,7 @@ import os
 import sys
 import torch
 import json
+import argparse
 import torch.nn as nn
 import numpy as np
 import pandas as pd
@@ -14,8 +15,13 @@ from AMPmodel.model import AMP_model
 from AMPmodel.check import fix_state_dict, model_info
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
+parser = argparse.ArgumentParser()
+parser.add_argument('--model', type=str, required=True)
+parser.add_argument('--model_w', type=str, required=True)
+args = parser.parse_args()
 
-model_name = 'ESM2_AMPS'
+
+model_name = args.model
 data_file = os.path.join(project_path, r'Dataset_work\dataset_feature\data_feature.h5')
 save_path = os.path.join(project_path, r'Model_work\model_out')
 config_file = os.path.join(project_path, r'Model_work\model_configs.json')
@@ -25,16 +31,17 @@ with open(config_file, "r") as f:
 model_dict = model_dicts[model_name]
 
 
-model_file = None
-for weight_path in model_dict["weight"]:
-    if os.path.exists(weight_path):
-        model_file = weight_path
-        break
-# 如果没有找到存在的权重文件，则下载
+model_file = args.model_w
 if model_file is None:
-    download_model_weidht(model_dict["weight_url"], model_dict["weight_file"])
-    model_file = model_dict["weight_file"]
-model_file = os.path.join(project_path, model_file)
+    for weight_path in model_dict["weight"]:
+        if os.path.exists(weight_path):
+            model_file = weight_path
+            break
+    # 如果没有找到存在的权重文件，则下载
+    if model_file is None:
+        download_model_weidht(model_dict["weight_url"], model_dict["weight_file"])
+        model_file = model_dict["weight_file"]
+        model_file = os.path.join(project_path, model_file)
 
 ### 数据预处理
 os.makedirs(save_path, exist_ok=True)

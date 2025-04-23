@@ -21,19 +21,32 @@ To ensure that you can replicate our work from the paper accurately, we recommen
 - protloc-mex-x version: 0.0.13
 - Pytorch version: 1.12.1
 
-**注意**：如果在protloc-mex-x的安装上出现困难，也可以直接使用该项目中的便捷版protloc-mex-x（here），只需要确保python >= 3.10, torch >= 1.12.1便能够正常使用该项目中基于ESM2_650m的蛋白质序列提取工程。
+**Note**: If you encounter difficulties installing protloc-mex-x, you can directly use the portable version of protloc-mex-x provided in this project (available [here](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Dataset_work)). Simply ensure `Python >= 3.10` and `torch >= 1.12.1` to properly utilize the protein sequence extraction workflow based on **ESM2_650m** in this project.
 
-模型使用
+## Model Usage
 
-在该项目中我们提供了直接使用**ESM2_AMPS**, **ESM2_AMP_CSE**，**ESM2_GRU**模型的案例：
+This project provides ready-to-use implementations of the **ESM2_AMPS**, **ESM2_AMP_CSE**, and **ESM2_GRU** models (ensure your environment meets the requirements):  
 
-第一步，克隆该项目至本地
+```bash  
+# Clone the project  
+git clone https://github.com/ywwy-qn/ESM2_AMP.git  
 
+conda activate env  # Replace with your local environment name  
+cd your_path_to_project/ESM2_AMP # Navigate to the project directory  
+
+# Step 1: Extract protein sequence features using ESM2 and preprocess data  
+python ./Dataset_work/code/dataprocessing_scrip.py --sequence_file "Dataset_work/dataset/Sample_dataset/sample_proteins.xlsx" --pairs_file "Dataset_work/dataset/Sample_dataset/sample_pairs.xlsx"  
+
+# Step 2: Perform inference using the model. Available models: "ESM2_AMPS", "ESM2_AMP_CSE", "ESM2_DPM"  
+python ./Model_work/prediction_script.py --model "ESM2_AMPS" #--model_w "Model_work/ESM2_AMPS/weight.pth"  
 ```
-git clone https://github.com/ywwy-qn/ESM2_AMP.git
-```
 
+**Important Notes**:  
+• The provided data is example data. For personal data usage, strictly follow the format and data types of the [sample data](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Dataset_work/dataset/Sample_dataset).  
 
+• For model inference, if you need to specify custom model weights, use the `--model_w` parameter in Step 2. The weight file could be foud on [figshare](https://figshare.com/articles/dataset/ESM2_AMP/28378157).
+
+• For advanced operations, refer to the detailed documentation in [Dataset_work](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Model_work) and [Model_work](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Model_work).
 
 ## Dataset Availability
 
@@ -42,7 +55,8 @@ This project provides training datasets and independent test sets for researcher
 ## Methods
 
 ### Feature representation
-The proteins' feature representation used the pre-trained protein model ESM2 developed by Meta company and placed on Hugging Face. For more details, please search in https://huggingface.co/facebook/esm2_t33_650M_UR50D. Besides, we used [protloc-mex-x](https://pypi.org/project/protloc_mex_X/) which our team developed, containing detail for `'cls'`,`'mean'`, `'eos'`,`'segment 0-9'` feature representation from ESM2. 关于蛋白质序列提取的代码细节请前往这里。
+The proteins' feature representation used the pre-trained protein model ESM2 developed by Meta company and placed on Hugging Face. For more details, please search in https://huggingface.co/facebook/esm2_t33_650M_UR50D. Besides, we used [protloc-mex-x](https://pypi.org/project/protloc_mex_X/) which our team developed, containing detail for `'cls'`,`'mean'`, `'eos'`,`'segment 0-9'` feature representation from ESM2. For details on the protein sequence extraction code, please refer to [here](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Dataset_work/code/dataprocessing_scrip.py).
+
 ### Models
 
 This project encompasses a series of models, including **ESM2_AMPS**, **ESM2_AMP_CSE**, and **ESM2_DPM** ( [Details](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Models/README.md) ), aimed at providing comprehensive support for predicting protein interactions. Example inference code for each model is provided within their respective directories, while the required model weight files can be downloaded from the project's corresponding [figshare](https://figshare.com/articles/dataset/ESM2_AMP/28378157) page.
@@ -51,11 +65,9 @@ This project encompasses a series of models, including **ESM2_AMPS**, **ESM2_AMP
 
 During model training, **Optuna** is primarily employed for hyperparameter selection, with key details as follows:
 
-- In ESM2_AMPS model training process, the learning rate was tuned within the range of 1e-5 to 1e-3, while the weight decay was adjusted between 1e-4 and 1e-2. For the MLP module, the first hidden layer size was varied from 480 to 640 with a step size of 160, and the second hidden layer size was explored from 80 to 320 with a step size of 80. Here are the code details.
-- ESM2_AMP_CSE model maintained these parameters but extended the weight decay range to 1e-4-1e-1. Here are the code details.
-- In ESM2_DPM model training process, the learning rate was tuned within the range of 1e-6 to 1e-5, while the weight decay was adjusted between 1e-3 and 1e-1. For the DNN module, the first hidden layer size varied from 960 to 1280 with a step size of 320, the second hidden layer size was explored from 320 to 640 with a step size of 160, and the last layer was 40 to 160 with 60 steps. Here are the code details.
-
-Model hyperparameter results are displayed in the Models file:  1.ESM2_AMPS  2.ESM2_AMP_CSE  3.ESM2_DPM
+- In **ESM2_AMPS** model training process, the learning rate was tuned within the range of 1e-5 to 1e-3, while the weight decay was adjusted between 1e-4 and 1e-2. For the MLP module, the first hidden layer size was varied from 480 to 640 with a step size of 160, and the second hidden layer size was explored from 80 to 320 with a step size of 80. Here are the code details and [result](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Model_work/ESM2_AMPS/config.yaml).
+- **ESM2_AMP_CSE** model maintained these parameters but extended the weight decay range to 1e-4-1e-1. Here are the code details and [result](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Model_work/ESM2_AMP_CSE/config.yaml).
+- In **ESM2_DPM** model training process, the learning rate was tuned within the range of 1e-6 to 1e-5, while the weight decay was adjusted between 1e-3 and 1e-1. For the DNN module, the first hidden layer size varied from 960 to 1280 with a step size of 320, the second hidden layer size was explored from 320 to 640 with a step size of 160, and the last layer was 40 to 160 with 60 steps. Here are the code details and [result](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Model_work/ESM2_DPM/config.yaml).
 
 ### Model evaluation
 
@@ -195,7 +207,7 @@ We performed dimensionality reduction on the extracted ESM2 protein feature repr
  ```
 7. Calculate Gini importance. Compute the Gini index importance for the RF model.
  ```python
-
+Updating...
  ```
 8. DNN model design. Integrated Gradient is an interpretability method that relies on decision tree models, and we adopt the DNN model. The model design code can be found in the [DNN](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Feature%20attribution/DNN.py) file within the **Feature Attribution** module. The process of training the DNN model is as follows:
  ```python
@@ -229,17 +241,15 @@ class CustomDataset(Dataset):
  ```
 9. Integrated Gradient Calculate.
 ```python
-
+Updating...
 ```
-
-
 
 ### Identification and computational methods of functional amino acid regions
 To investigate the potential correlation between feature attention weights and specific residues or residue regions, a detailed analysis was conducted on the ESM2_AMPS model, which relies solely on segment local features. Using samples from the real_test dataset, the top three features with the highest weight values in each sample were identified, and the proportion of functional amino acid sequences they covered was calculated. For comparison, the three features with the lowest weights were selected as the negative control group. The functional amino acid region information for each protein in the samples was obtained from the UniProt database.
 
 The types of functional amino acid regions we selected include ***Domain***, ***Region***, ***Compositional bias***, ***Repeat***, and ***Motif***.
 ```cmd
-We are currently undergoing peer review, so the code related to this part has not been made available. Please contact the author if needed.
+Updating...
 ```
 
 

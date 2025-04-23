@@ -4,6 +4,7 @@ import re
 import sys
 import time
 import torch
+import argparse
 import subprocess
 import numpy as np
 import pandas as pd
@@ -12,9 +13,16 @@ sys.path.append(os.path.join(project_path, 'Dataset_work'))
 from protloc_mex_X.ESM2_fr import Esm2LastHiddenFeatureExtractor
 from transformers import AutoTokenizer, AutoModelForMaskedLM
 
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--seqf', type=str, required=True)
+parser.add_argument('--pairsf', type=str, required=True)
+args = parser.parse_args()
+
+
 #代码的路径
-sequence_file = os.path.join(project_path, r'Dataset_work\dataset\Sample_dataset\sample_proteins.xlsx')
-pairs_file = os.path.join(project_path, r'Dataset_work\dataset\Sample_dataset\sample_pairs.xlsx')
+sequence_file = args.seqf
+pairs_file = args.pairsf
 
 chunk_folder = os.path.join(project_path, r'Dataset_work\dataset_feature')
 protein_ppifile = os.path.join(project_path, r'Dataset_work\dataset_feature\data_feature.h5')
@@ -116,3 +124,4 @@ test_data.columns = new_column_names2
 #第二个Entry没有设置为2
 test_data = test_data.drop(columns=['Entry1', 'Entry'])
 test_data.to_hdf(protein_ppifile, key='df', mode='w')
+print(f"The datafeature was saved to {protein_ppifile}.")
