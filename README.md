@@ -331,6 +331,46 @@ We performed dimensionality reduction on the extracted ESM2 protein feature repr
  # Initialize SHAP and calculate shap_values
  shap_values = init_shap_analysis(model, X_test)
  ```
+7. Calculate Gini importance. Compute the Gini index importance for the RF model.
+ ```python
+
+ ```
+8. DNN model design. Integrated Gradient is an interpretability method that relies on decision tree models, and we adopt the DNN model. The model design code can be found in the [DNN](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Feature%20attribution/DNN.py) file within the **Feature Attribution** module. The process of training the DNN model is as follows:
+ ```python
+ class DNN(nn.Module):
+    def __init__(self, input_dim=3000, hidden1_dim=1500, hidden2_dim=500, output_dim=1):
+        super(DNN, self).__init__()
+        self.mlp_layers = nn.Sequential(
+            nn.Linear(input_dim, hidden1_dim),
+            nn.ReLU(),
+            nn.Linear(hidden1_dim, hidden2_dim),
+            nn.ReLU(),
+            nn.Linear(hidden2_dim, output_dim))
+        
+    def forward(self, X):
+        return self.mlp_layers(X)
+
+class CustomDataset(Dataset):
+    def __init__(self, data_features, data_label=None):
+        self.features = torch.tensor(data_features.values).float()
+        self.has_labels = data_label is not None
+        if self.has_labels:
+            self.labels = torch.tensor(data_label).float()
+        
+    def __len__(self):
+        return len(self.features)
+    
+    def __getitem__(self, idx):
+        if self.has_labels:
+            return self.features[idx], self.labels[idx]
+        return self.features[idx]
+ ```
+9. Integrated Gradient Calculate.
+```python
+
+```
+
+
 
 ### Identification and computational methods of functional amino acid regions
 To investigate the potential correlation between feature attention weights and specific residues or residue regions, a detailed analysis was conducted on the ESM2_AMPS model, which relies solely on segment local features. Using samples from the real_test dataset, the top three features with the highest weight values in each sample were identified, and the proportion of functional amino acid sequences they covered was calculated. For comparison, the three features with the lowest weights were selected as the negative control group. The functional amino acid region information for each protein in the samples was obtained from the UniProt database.
