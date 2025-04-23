@@ -156,6 +156,12 @@ If you are using **Anaconda**, you can also install these packages using **conda
  optimizer = AdamW(model.parameters(), lr=lr, weight_decay=weight_decay)
  scheduler = ReduceLROnPlateau(optimizer, mode='min', factor=0.1, patience=5, verbose=True, min_lr=1e-8)
  ```
+### Hyperparameter tuning setting
+In ESM2_AMPS model training process, the learning rate was tuned within the range of 1e-5 to 1e-3, while the weight decay was adjusted between 1e-4 and 1e-2. For the MLP module, the first hidden layer size was varied from 480 to 640 with a step size of 160, and the second hidden layer size was explored from 80 to 320 with a step size of 80. ESM2_AMP_CSE model maintained these parameters but extended the weight decay range to 1e-4-1e-1. In ESM2_DPM model training process, the learning rate was tuned within the range of 1e-6 to 1e-5, while the weight decay was adjusted between 1e-3 and 1e-1. For the DNN module, the first hidden layer size varied from 960 to 1280 with a step size of 320, the second hidden layer size was explored from 320 to 640 with a step size of 160, and the last layer was 40 to 160 with 60 steps.
+
+Model hyperparameter results are displayed in the Models file: 1 ESM2_AMPS 2 ESM2_AMP_CSE  3 ESM2_DPM
+
+
 
 ### Model evaluation
 
