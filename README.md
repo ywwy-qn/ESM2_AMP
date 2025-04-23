@@ -21,7 +21,7 @@ To ensure that you can replicate our work from the paper accurately, we recommen
 - protloc-mex-x version: 0.0.13
 - Pytorch version: 1.12.1
 
-**Note**: If you encounter difficulties installing protloc-mex-x, you can directly use the portable version of protloc-mex-x provided in this project (available [here](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Dataset_work)). Simply ensure `Python >= 3.10` and `torch >= 1.12.1` to properly utilize the protein sequence extraction workflow based on **ESM2_650m** in this project.
+**Note**: you also can directly use the portable version of protloc-mex-x provided in this project (available [here](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Dataset_work)). Simply ensure `Python >= 3.10` and `torch >= 1.12.1` to properly utilize the protein sequence extraction workflow based on **ESM2_650m** in this project.
 
 ## Model Usage
 
