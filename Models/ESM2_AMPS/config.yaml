@@ -1,0 +1,16 @@
+model:
+  protein_embeddding_dim: 25600
+  train_loader dim: (n, 20, 1280) #n is sample number
+
+  encoder_layer:
+    d_model: 1280
+    nhead: 8
+  MLP:
+    input_dim: 1280
+    hidden1_dim: 640
+    hidden2_dim: 240
+    output_dim: 1
+
+Training:
+  learning rate: 0.00012188013399710655
+  weight decay: 0.00029515893139888446
