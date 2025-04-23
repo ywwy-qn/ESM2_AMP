@@ -1,0 +1,4 @@
+model:
+  hidden1_dim: 1280
+  hidden2_dim: 480
+  hidden3_dim: 100
