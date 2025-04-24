@@ -71,8 +71,7 @@ During model training, Optuna is primarily employed for **Bayesian optimization-
 
 ### Model evaluation
 
-During the model evaluation phase, multiple metrics such as **Accuracy**, **MCC**, **Recall**, **F1 score**, and **Precision** are used to assess the model's performance.The evaluation metrics and calculation methods are shown in code. 
-
+During the model evaluation phase, multiple metrics such as **Accuracy**, **MCC**, **Recall**, **F1 score**, and **Precision** are used to assess the model's performance.The evaluation metrics and calculation methods are shown in [code](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Model_work/AMPmodel/check.py). 
 
 ### Attention-based Explainable Analysis
 
@@ -245,15 +244,15 @@ Update pending...
 ```
 
 ### Identification and computational methods of functional amino acid regions
-To investigate the potential correlation between feature attention weights and specific residues or residue regions, a detailed analysis was conducted on the ESM2_AMPS model, which relies solely on segment local features. Using samples from the real_test dataset, the top three features with the highest weight values in each sample were identified, and the proportion of functional amino acid sequences they covered was calculated. For comparison, the three features with the lowest weights were selected as the negative control group. The functional amino acid region information for each protein in the samples was obtained from the UniProt database.
+To explore the potential association between feature attention weights and specific residues or residue regions, this study conducted a detailed analysis of the **ESM2_AMPS** model, which relies solely on local features of fragments. Based on samples from the **real_test** dataset, the top three features with the highest weight values in each sample were first identified, and the proportion of their coverage of functional amino acid sequences was calculated. Meanwhile, the three features with the lowest weights were selected as a negative control group for comparison. Information on functional amino acid regions for all proteins in the dataset was obtained from the **UniProt** and **InterPro** databases.
 
-The types of functional amino acid regions we selected include ***Domain***, ***Region***, ***Compositional bias***, ***Repeat***, and ***Motif***.
-```html
-Update pending...
-```
+- When analyzing based on the **UniProt** database, the selected functional amino acid region types included: **"Domain"**, **"Region"**, **"Compositional bias"**, **"Repeat"**, and **"Motif"**.
+- When analyzing based on the **InterPro** database, the selected functional amino acid region types included: **"Domain"**, **"Repeat"**, **"Active_site"**, **"Binding_site"**, **"Conserved_site"**, and **"Ptm"** (Note: **"Homologous_superfamily"** and **"Family"** were not included in the calculations, as they belong to classification-level special sequence fragments).
 
+Here is the code [detail](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Identification%20and%20computational%20methods%20of%20functional%20amino%20acid%20regions).
 
 ### Related Works
+
 If you are interested in feature extraction and model interpretation for large language models, you may find our previous work helpful:
 
 - Interpretable feature extraction and dimensionality reduction in ESM2 for protein localization prediction: [Link](https://doi.org/10.1093/bib/bbad534); [GitHub Repositor](https://github.com/yujuan-zhang/feature-representation-for-LLMs)
