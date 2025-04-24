@@ -67,3 +67,32 @@ class AMP_model(nn.Module):
             
         # MLP前向传播
         return self.mlp_layers(pooled)
+
+
+
+
+# Construct DNN class
+class DNN(nn.Module):
+    def __init__(self, input_dim=2560, hidden1_dim=1280, hidden2_dim=480, hidden3_dim=100, output_dim=1):
+        super(DNN, self).__init__()
+
+        self.dnn_layers = nn.Sequential(
+            nn.Linear(input_dim, hidden1_dim),
+            nn.LayerNorm(hidden1_dim),
+            nn.ReLU(),
+            nn.Linear(hidden1_dim, hidden2_dim),
+            nn.LayerNorm(hidden2_dim),
+            nn.ReLU(),
+            nn.Linear(hidden2_dim, hidden3_dim),
+            nn.LayerNorm(hidden3_dim),
+            nn.ReLU(),
+            nn.Linear(hidden3_dim, output_dim)
+        )
+
+        for m in self.dnn_layers.modules():
+            if isinstance(m, nn.Linear):
+                kaiming_normal_(m.weight.data, a=0, mode='fan_in', nonlinearity='relu')
+
+    def forward(self, X):
+        dnn_out = self.dnn_layers(X)
+        return dnn_out

@@ -86,7 +86,6 @@ def model_info(model, dataset, batch_size, device):
     dataloader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=False)
     model.eval()
     y_pred_list = []
-    y_true_list = []
     all_outputs = []
     probabilities_list = []
     with torch.no_grad():
@@ -320,6 +319,35 @@ def calculate_cv_loss(all_5_val_loss_list, mode="last"):
     
     # 计算平均损失
     return np.mean(selected_losses)
+
+
+def save_fold_step_loss_as_csv(best_trial, outputPath, file_name):
+    # 从最佳试验的用户属性中获取所有折叠的训练步骤损失记录
+    step_loss_records = {}
+    for key in best_trial.user_attrs.keys():
+        if 'fold_' in key and '_step_loss_records' in key:
+            fold_number = int(key.split('_')[1])
+            step_loss_records[fold_number] = best_trial.user_attrs[key]
+
+    # 创建一个空的 DataFrame 来存储所有折叠的步进损失记录
+    all_fold_step_loss = pd.DataFrame()
+
+    # 遍历所有折叠的记录并将它们添加到 DataFrame 中
+    for fold_number, record in sorted(step_loss_records.items()):
+        fold_df = pd.DataFrame({
+            f'fold_{fold_number}_step': record[f'fold_{fold_number}_step'],
+            f'fold_{fold_number}_step_loss': record[f'fold_{fold_number}_step_loss']
+        })
+        if all_fold_step_loss.empty:
+            all_fold_step_loss = fold_df
+        else:
+            all_fold_step_loss = pd.concat([all_fold_step_loss, fold_df], axis=1)
+
+    # 保存为 CSV 文件
+    output_file_path = outputPath + '/' + file_name + '_all_folds_model_train_step_loss.csv'
+    all_fold_step_loss.to_csv(output_file_path, index=False)
+
+    print(f'Step loss records for all folds saved to {output_file_path}')
 
 
 
