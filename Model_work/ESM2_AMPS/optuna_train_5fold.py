@@ -1,5 +1,5 @@
-###初始化过程==================================================================
-print("初始化")
+### Initialization Process ===========================================================
+print("Initialization")
 import re
 import os
 import sys
@@ -25,7 +25,7 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 dataset_path = "The path to pandata_feature_set"
 outputPath = "The path to save"
 
-# 这是使用pandataset作为五折交叉验证的数据集，以下为数据读入案例（仅限pandataset）
+# Example data loading for 5-fold cross-validation using pandataset
 feature_all = load_and_concatenate_pandata(datasetPath = dataset_path, 
                                         positive_train_one_colums = "/train_pairs_features/train_pairs_features/SuppA_positive/one_part/Homo_sapiens_pan_train_onepart_positive_pairs_columns.xlsx", 
                                         positive_train_one_features = "/train_pairs_features/train_pairs_features/SuppA_positive/one_part/Homo_sapiens_pan_train_onepart_positive_pairs_features.npy", 
@@ -50,8 +50,8 @@ feature_all = load_and_concatenate_pandata(datasetPath = dataset_path,
                                         negative_test_infor = "/test_pairs_features/test_pairs_features/negative_test/Homo_sapiens_pan_test_negative_pairs_infor.xlsx",
                                         sample_nums = 20)
 
-### 数据预处理
-print('开始进行数据预处理')
+# Data Preprocessing
+print('Starting data preprocessing')
 feature_columns = []
 patterns_f = ['Protein1', 'Protein2', 'Label', 'Pairs', r'1_ESM2_segment\d+', r'2_ESM2_segment\d+']
 
@@ -62,19 +62,19 @@ for pattern in patterns_f:
 feature_all_reserve = feature_all[feature_columns]
 train_data_all = feature_all_reserve.set_index(['Pairs'])
 
-#将特征与标签提出来，单独放在dataframe里面
+# Extract features and labels into separate dataframes
 train_data_features = train_data_all.loc[:, '1_ESM2_segment0_mean0':]
 train_data_label = train_data_all[['Label']]
 
-#删除不需要的数据
+# Delete unnecessary data
 del feature_all
 del train_data_all
 del feature_all_reserve
-print('数据处理成功')
+print('Data processing completed')
 
 
-###optuna逻辑预设==================================================================
-print('进行模型框架预设')
+### Optuna Logic Preset ===========================================================
+print('Setting up model framework')
 import time
 import json
 import torch
@@ -86,8 +86,7 @@ from sklearn.model_selection import StratifiedKFold
 from sklearn.metrics import accuracy_score, recall_score, f1_score, roc_auc_score, matthews_corrcoef
 import logging
 
-
-# 初始化日志器
+# Initialize logger
 logger = setup_logger('AMP_model_Training', outputPath + "/training.log")
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -101,7 +100,7 @@ def train_model(trial):
     all_5_auc_list = []
     
     
-    # 获取超参数
+    # Get hyperparameters
     lr = trial.suggest_loguniform('lr', 1e-5, 1e-3) # 9.33618396049655e-05
     weight_decay = trial.suggest_loguniform('weight_decay', 1e-4, 1e-2) # 0.00610294452449458
     hidden1_dim = trial.suggest_int('hidden1_dim', low=480, high=640, step=160) # 640
@@ -109,7 +108,7 @@ def train_model(trial):
     
 
     skf = StratifiedKFold(n_splits=5, shuffle=True, random_state=42)
-    fold_count = 1  # 初始化折数计数器
+    fold_count = 1  # Initialize fold counter
     step_loss_records = {'fold_1_step': [], 'fold_1_step_loss': [],
                          'fold_2_step': [], 'fold_2_step_loss': [],
                          'fold_3_step': [], 'fold_3_step_loss': [],
@@ -117,7 +116,7 @@ def train_model(trial):
                          'fold_5_step': [], 'fold_5_step_loss': [],}
 
     for train_index, val_index in skf.split(train_data_features, train_data_label['Label']):
-        logging.info(f"Starting Fold {fold_count}/{skf.n_splits}")  # 记录当前的折数
+        logging.info(f"Starting Fold {fold_count}/{skf.n_splits}")  # Log current fold
         avg_val_loss_list = []
         avg_mcc_list = []
         accuracy_list = []
@@ -146,7 +145,7 @@ def train_model(trial):
         val_dataloader = torch.utils.data.DataLoader(val_dataset, batch_size=256, shuffle=False)
         del train_dataset, val_dataset
 
-        num_epochs = 35  # 总迭代轮数
+        num_epochs = 35  # Total epochs
         step = 0
         step_loss = 0
         for epoch in range(num_epochs):
@@ -172,7 +171,7 @@ def train_model(trial):
 
             
             avg_val_loss, accuracy, recall, f1, auc, mcc, precision, predictions_df = evaluate_model(model, val_dataloader, criterion, device)
-            # 存储当前折中所有epoch的性能指标
+            # Store performance metrics for current epoch
             avg_val_loss_list.append(avg_val_loss)
             avg_mcc_list.append(mcc)
             accuracy_list.append(accuracy)
@@ -183,7 +182,7 @@ def train_model(trial):
             logging.info(f"Epoch {epoch + 1} completed: Validation average Loss = {avg_val_loss:.4f}, MCC = {mcc:.4f}, Accuracy = {accuracy:.4f}, Recall = {recall:.4f}, F1 Score = {f1:.4f}, AUC = {auc:.4f}")
 
 
-        #汇总五折的所有性能指标
+        # Aggregate performance metrics across 5 folds
         all_5_val_loss_list.append(avg_val_loss_list)
         all_5_mcc_list.append(avg_mcc_list)
         all_5_accuracy_list.append(accuracy_list)
@@ -193,7 +192,7 @@ def train_model(trial):
         
         logging.info(f"Fold {fold_count} completed with validation MCC: {calculate_cv_loss(avg_mcc_list):.4f}, Accuracy = {calculate_cv_loss(accuracy_list):.4f}, Recall = {calculate_cv_loss(recall_list):.4f}, F1 Score = {calculate_cv_loss(f1_list):.4f}, AUC = {calculate_cv_loss(auc_list):.4f}")
         trial.set_user_attr(f'fold_{fold_count}_step_loss_records', step_loss_records)
-        fold_count += 1  # 增加折数计数器
+        fold_count += 1  # Increment fold counter
 
     trial.set_user_attr('best_model_state_dict', model.state_dict())
     logging.info("Training completed.")
@@ -201,7 +200,7 @@ def train_model(trial):
     avg_5_val_loss = calculate_cv_loss(all_5_val_loss_list)
     avg_5_mcc = calculate_cv_loss(all_5_mcc_list)
     
-    # 将 mcc_list 存储到当前试验的用户属性中
+    # Store mcc_list in trial's user attributes
     trial.set_user_attr('mcc_list', all_5_mcc_list)
     trial.set_user_attr('accuracy_list', all_5_accuracy_list)
     trial.set_user_attr('recall_list', all_5_recall_list)
@@ -210,18 +209,18 @@ def train_model(trial):
     
     return avg_5_mcc
 
-# 其他必要的导入和设置
+# Other necessary imports and settings
 logging.basicConfig(level=logging.INFO)
 
 
-### 超参数训练以及保存==========================================================
+### Hyperparameter Tuning and Saving ===========================================================
 st = time.time()
 study = optuna.create_study(study_name='test_DNN', direction='minimize')
 study.optimize(lambda trial: train_model(trial), n_trials= 6 )
-# 获取最优的超参数
+# Get optimal hyperparameters
 best_trial = study.best_trial
 
-# 获取最优试验的所有指标列表
+# Get all metric lists from best trial
 best_mcc_list = best_trial.user_attrs.get('mcc_list', None)
 best_accuracy_list = best_trial.user_attrs.get('accuracy_list', None)
 best_recall_list = best_trial.user_attrs.get('recall_list', None)
@@ -230,7 +229,7 @@ best_auc_list = best_trial.user_attrs.get('auc_list', None)
 
 
 file_name = 'model'
-# 创建一个字典存储最优超参数
+# Create dictionary to store best hyperparameters
 best_params_dict = {
     'lr': best_trial.params['lr'],
     'weight_decay': best_trial.params['weight_decay'],
@@ -238,7 +237,7 @@ best_params_dict = {
     'hidden2_dim': best_trial.params['hidden2_dim']
 }
 
-# 将最优超参数保存为JSON文件
+# Save best hyperparameters as JSON file
 with open(outputPath + '/' + file_name + '_best_params.json', 'w') as f:
     json.dump(best_params_dict, f)
 
@@ -247,7 +246,7 @@ print("Minimum validation loss: ", study.best_value)
 print("Total optimization time: ", time.time() - st)
 print("Best Loss:", study.best_value)
 
-#保存最优模型评估结果
+# Save best model evaluation results
 best_mcc_list_df = pd.DataFrame(best_mcc_list)
 best_mcc_list_df.to_csv(outputPath + '/' + file_name + 'best_mcc_list.csv', index=False)
 
@@ -263,8 +262,8 @@ best_f1_list_df.to_csv(outputPath + '/' + file_name + 'best_f1_list.csv', index=
 best_auc_list_df = pd.DataFrame(best_auc_list)
 best_auc_list_df.to_csv(outputPath + '/' + file_name + 'best_auc_list.csv', index=False)
 
-# 保存最优模型权重
+# Save best model weights
 torch.save(best_trial.user_attrs['best_model_state_dict'], outputPath + '/' + file_name + '_model_weights.pth')
 save_fold_step_loss_as_csv(best_trial = best_trial, outputPath = outputPath, file_name = 'best_trail')
 
-print("工作顺利成功！")
+print("Job completed successfully!")
