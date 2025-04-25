@@ -204,11 +204,8 @@ We performed dimensionality reduction on the extracted ESM2 protein feature repr
  # Initialize SHAP and calculate shap_values
  shap_values = init_shap_analysis(model, X_test)
  ```
-7. Calculate Gini importance. Compute the Gini index importance for the RF model.
- ```html
-Update pending...
- ```
-8. DNN model design. Integrated Gradient is an interpretability method that relies on decision tree models, and we adopt the DNN model. The model design code can be found in the [DNN](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Feature%20attribution/DNN.py) file within the **Feature Attribution** module. The process of training the DNN model is as follows:
+
+7. DNN model design. Integrated Gradient is an interpretability method that relies on decision tree models, and we adopt the DNN model. The model design code can be found in the [DNN](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Feature%20attribution/DNN.py) file within the **Feature Attribution** module. The process of training the DNN model is as follows:
  ```python
  class DNN(nn.Module):
     def __init__(self, input_dim=3000, hidden1_dim=1500, hidden2_dim=500, output_dim=1):
@@ -238,9 +235,63 @@ class CustomDataset(Dataset):
             return self.features[idx], self.labels[idx]
         return self.features[idx]
  ```
-9. Integrated Gradient Calculate.
-```html
-Update pending...
+8. Integrated Gradient Calculate.
+```python
+class IGFeatureImportance:
+    def __init__(self, model, device):
+        self.model = model
+        self.device = device
+        self.ig = IntegratedGradients(model)
+    
+    def compute_attributions(self, X_data, target_label=None):
+        """
+        Compute IG attributions using random 200 samples as baseline.
+        
+        Parameters:
+        - X_data: Input data (pd.DataFrame)
+        - target_label: Target label for classification models (int)
+        
+        Returns:
+        - attributions: Computed attributions (np.ndarray)
+        """
+        X_tensor = torch.tensor(X_data.values, dtype=torch.float32).to(self.device)
+        
+        # Randomly select 200 samples as baseline
+        np.random.seed(0)
+        background_index = np.random.choice(X_tensor.shape[0], size=200, replace=False)
+        baseline_data = X_tensor[background_index].mean(dim=0, keepdim=True).to(self.device)
+        
+        # Compute attributions
+        attributions = self.ig.attribute(
+            inputs=X_tensor,
+            baselines=baseline_data,
+            target=target_label,
+            n_steps=50,
+            internal_batch_size=64
+        )
+        
+        return attributions.detach().cpu().numpy()
+
+ def group_by_prefix(attributions, feature_names):
+
+        prefixes = []
+        for f in feature_names:
+            parts = f.split('_')
+            if parts[0] == '1':
+                parts[0] = 'A'
+            elif parts[0] == '2':
+                parts[0] = 'B'
+            prefixes.append("_".join(parts[:2]))
+
+        unique_prefixes = sorted(set(prefixes))
+
+        grouped_attributions = np.zeros((attributions.shape[0], len(unique_prefixes)))
+        for j, prefix in enumerate(unique_prefixes):
+            cols = [i for i, f in enumerate(feature_names)
+                    if f.startswith(prefix.replace("A_", "1_").replace("B_", "2_"))]
+            grouped_attributions[:, j] = np.mean(np.abs(attributions[:, cols]), axis=1)
+
+        return grouped_attributions, unique_prefixes
 ```
 
 ### Identification and computational methods of functional amino acid regions
