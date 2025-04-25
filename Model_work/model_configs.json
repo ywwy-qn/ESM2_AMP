@@ -5,9 +5,9 @@
         "mode": "transformer",
         "hidden1": 480,
         "hidden2": 240,
-        "weight": ["Model_work/ESM2_AMPS/model_weigth.pth", "Model_work/ESM2_AMPS/model_weigth.pth", "Model_work/ESM2_AMPS/model_weigth.pth"],
+        "weight": ["ESM2_AMPS.pth"],
         "weight_url": "https://figshare.com/ndownloader/files/52341845",
-        "weight_file": "Model_work/ESM2_AMPS/model_weigth.pth"
+        "weight_file": "ESM2_AMPS.pth"
     },
     "ESM2_GRU": {
         "feature": "seg",
