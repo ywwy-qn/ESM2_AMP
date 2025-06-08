@@ -4,11 +4,11 @@
 from setuptools import setup
 
 setup(
-    name="scATD",
+    name="ESM2_AMP",
     version="0.1.0",
     author="Yawen Sun",
     author_email="2108437154@qq.com",
-    description="scATD is a tool for single-cell transcriptome data drug response prediction",
+    description="ESM2_AMP framework and interpretable",
     install_requires=[
         'seaborn==0.12.2',
         'transformers==4.33.1',
@@ -32,7 +32,7 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
     ],
-    python_requires='>=3.10',  
+    python_requires='>=3.11',  
     packages=['AMPmodel', 'model_pred', 'attribution'],
 )
 
