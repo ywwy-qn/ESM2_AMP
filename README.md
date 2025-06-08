@@ -16,10 +16,31 @@ Your contributions, feedback, and suggestions are highly appreciated. If you enc
 
 ## Work Environment Setup
 
-To ensure that you can replicate our work from the paper accurately, we recommend using the following work environment:   
-- Python version: 3.10
-- protloc-mex-x version: 0.0.13
-- Pytorch version: 1.12.1
+For the environment configuration of other ESM2_AMP modules
+ 1. Clone this repository or download the project files.
+ 2. Navigate to the project directory.
+ 3. Create a new Conda environment with Python version >= 3.10, then activate the environment:
+```bash
+conda create -n esm2_amp-env python=3.10
+conda activate esm2_amp-env
+```
+
+ 4. For CPU-only setup (if you don't need GPU acceleration):
+```bash
+pip install .
+```
+
+ 5. (Optional) To enable GPU acceleration with CUDA (e.g., CUDA 11.7), please first install the necessary dependencies via Conda:
+```bash
+conda install pytorch==2.0.2 torchvision==0.15.2 torchaudio==2.0.2 pytorch-cuda=11.7 -c pytorch -c nvidia
+```
+ After successfully installing the dependencies, install the current package with:
+```bash
+pip install .
+```
+
+
+
 
 **Note**: you also can directly use the portable version of protloc-mex-x provided in this project (available [here](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Dataset_work)). Simply ensure `Python >= 3.10` and `torch >= 1.12.1` to properly utilize the protein sequence extraction workflow based on **ESM2_650m** in this project.
 
