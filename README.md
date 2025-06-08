@@ -18,8 +18,17 @@ Your contributions, feedback, and suggestions are highly appreciated. If you enc
 
 For the environment configuration of other ESM2_AMP modules
  1. Clone this repository or download the project files.
+```bash  
+# Clone the project  
+git clone https://github.com/ywwy-qn/ESM2_AMP.git  
+
+```
  2. Navigate to the project directory.
- 3. Create a new Conda environment with Python version >= 3.10, then activate the environment:
+```bash 
+cd your_path_to_project/ESM2_AMP # Navigate to the project directory  
+```
+ 
+ 4. Create a new Conda environment with Python version >= 3.10, then activate the environment:
 ```bash
 conda create -n esm2_amp-env python=3.10
 conda activate esm2_amp-env
@@ -38,6 +47,22 @@ conda install pytorch==2.0.2 torchvision==0.15.2 torchaudio==2.0.2 pytorch-cuda=
 ```bash
 pip install .
 ```
+
+## model prediction
+# ESM2_AMPS
+```bash
+python model_pred/ESM2_AMPS_pred.py
+```
+# ESM2_AMP_CSE
+```bash
+python model_pred/ESM2_AMP_CSE_pred.py
+```
+# ESM2_DPM
+```bash
+python model_pred/ESM2_DPM_pred.py
+```
+
+##### 截至到这里
 
 
 
