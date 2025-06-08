@@ -30,24 +30,24 @@ cd your_path_to_project/ESM2_AMP # Navigate to the project directory
  
  4. Create a new Conda environment with Python version >= 3.10, then activate the environment:
 ```bash
-conda create -n esm2_amp-env python=3.10
+conda create -n esm2_amp-env python=3.11
 conda activate esm2_amp-env
 ```
 
  4. For CPU-only setup (if you don't need GPU acceleration):
 ```bash
-pip install .
+pip install torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2
 ```
 
- 5. (Optional) To enable GPU acceleration with CUDA (e.g., CUDA 11.7), please first install the necessary dependencies via Conda:
+ 5. (Optional) To enable GPU acceleration with CUDA (e.g., CUDA 11.8), please first install the necessary dependencies via Conda:
 ```bash
-conda install pytorch==2.0.2 torchvision==0.15.2 torchaudio==2.0.2 pytorch-cuda=11.7 -c pytorch -c nvidia
+pip install torch==2.0.1+cu118 torchvision==0.15.2+cu118 torchaudio==2.0.2+cu118 --index-url [https://download.pytorch.org/whl/cu118](https://download.pytorch.org/whl/cu118)
 ```
  After successfully installing the dependencies, install the current package with:
 ```bash
 pip install .
 ```
-
+**Note:** In step5, a matching torch version needs to be installed based on the user's own cuda version. The PyTorch link is [PyTorch](https://pytorch.org/get-started/previous-versions/)
 ## model prediction
 # ESM2_AMPS
 ```bash
