@@ -62,6 +62,21 @@ python model_pred/ESM2_AMP_CSE_pred.py
 python model_pred/ESM2_DPM_pred.py
 ```
 
+### Attention-based Explainable Analysis (AMPmodel_explainable)
+
+Both models within the **ESM2_AMP** framework utilize the multi-head attention mechanism of the Transformer encoder. By leveraging the weight matrix allocation in the multi-head attention mechanism, the attention weights corresponding to the sample features are extracted, and their feature importance is calculated and quantified.
+
+# ESM2_AMPS model Attention weights and visualization
+```bash
+python AMPmodel_explainable/ESM2_AMPS_attention_weights_and_maps.py
+```
+
+# ESM2_AMP_CSE model Attention weights and visualization
+```bash
+python AMPmodel_explainable/ESM2_AMP_CSE_attention_weights_and_maps.py
+```
+
+
 ##### 截至到这里
 
 
@@ -119,13 +134,7 @@ During model training, Optuna is primarily employed for **Bayesian optimization-
 
 During the model evaluation phase, multiple metrics such as **Accuracy**, **MCC**, **Recall**, **F1 score**, and **Precision** are used to assess the model's performance.The evaluation metrics and calculation methods are shown in [code](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Model_work/AMPmodel/check.py). 
 
-### Attention-based Explainable Analysis
 
-Both models within the **ESM2_AMP** framework utilize the multi-head attention mechanism of the Transformer encoder. By leveraging the weight matrix allocation in the multi-head attention mechanism, the attention weights corresponding to the sample features are extracted, and their feature importance is calculated and quantified.
-
-```html
-Update pending...
-```
 
 ### Feature attribution interpretable method
 
