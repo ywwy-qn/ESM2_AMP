@@ -5,7 +5,7 @@ from setuptools import setup
 
 setup(
     name="ESM2_AMP",
-    version="0.1.0",
+    version="0.2.0",
     author="Yawen Sun",
     author_email="2108437154@qq.com",
     description="ESM2_AMP framework and interpretable",
@@ -19,7 +19,8 @@ setup(
         'openpyxl==3.1.5',
         'optuna==3.6.0',
         'tables==3.10.2',
-        'protloc_mex_X==0.0.13'
+        'protloc_mex_X==0.0.13',
+        'matplotlib==3.8.4'
     ],
     extras_require={
         'cuda': [
@@ -33,6 +34,6 @@ setup(
         'Operating System :: OS Independent',
     ],
     python_requires='>=3.11',  
-    packages=['AMPmodel', 'model_pred', 'attribution'],
+    packages=['AMPmodel', 'model_pred', 'AMPmodel_explainable'],
 )
 
