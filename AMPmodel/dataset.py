@@ -4,16 +4,16 @@ import re
 import torch
 from torch.utils.data import Dataset
 
-
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 class CustomDataset(Dataset):
     def __init__(self, data_features, data_label, reshape_shape=None):
         if reshape_shape:
-            self.features = torch.tensor(data_features.values.reshape(reshape_shape)).float()
+            self.features = torch.tensor(data_features.values.reshape(reshape_shape)).float().to(device)
         else:
-            self.features = torch.tensor(data_features.values).float()
+            self.features = torch.tensor(data_features.values).float().to(device)
 
         assert len(data_features) == len(data_label), "特征和标签数据的样本数量不匹配！"
-        self.labels = torch.tensor(data_label.values).float()
+        self.labels = torch.tensor(data_label.values).float().to(device)
 
     def __len__(self):
         return len(self.features)
@@ -25,7 +25,7 @@ class CustomDataset(Dataset):
 def load_dataset(mode='split',
                  feature_file='data/real_test_dataset_features.h5',
                  sample_file='data/real_test_dataset_samples.xlsx'):
-    assert mode in ['split', 'segment', 'mean'], "mode 参数必须是 'split', 'segment' 或 'mean'。"
+    assert mode in ['split', 'segment', 'mean'],
 
     protein_feature = pd.read_hdf(feature_file, key='df')
     test_sample = pd.read_excel(sample_file)
