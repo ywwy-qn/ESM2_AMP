@@ -1,1 +1,2 @@
-##权重文件，将[figshare](https://figshare.com/articles/dataset/ESM2_AMP/28378157)中ESM2_AMPS.pth,ESM2_AMP_CSE.pth,ESM2_DPM.pth三个文件放在此处
+## Trained model weights file
+Place the three files from [figshare](https://figshare.com/articles/dataset/ESM2_AMP/28378157)—ESM2_AMPS.pth, ESM2_AMP_CSE.pth, and ESM2_DPM.pth—here.
