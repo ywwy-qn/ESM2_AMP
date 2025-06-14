@@ -28,7 +28,7 @@ git clone https://github.com/ywwy-qn/ESM2_AMP.git
 cd your_path_to_project/ESM2_AMP # Navigate to the project directory  
 ```
  
- 4. Create a new Conda environment with Python version >= 3.10, then activate the environment:
+ 4. Create a new Conda environment with Python version >= 3.11, then activate the environment:
 ```bash
 conda create -n esm2_amp-env python=3.11
 conda activate esm2_amp-env
@@ -62,20 +62,33 @@ python model_pred/ESM2_AMP_CSE_pred.py
 python model_pred/ESM2_DPM_pred.py
 ```
 
-### Attention-based Explainable Analysis (AMPmodel_explainable)
+### AMPmodel_explainable
 
+1.Attention-based Explainable Analysis (Attention_explainable)
 Both models within the **ESM2_AMP** framework utilize the multi-head attention mechanism of the Transformer encoder. By leveraging the weight matrix allocation in the multi-head attention mechanism, the attention weights corresponding to the sample features are extracted, and their feature importance is calculated and quantified.
 
 # ESM2_AMPS model Attention weights and visualization
 ```bash
-python AMPmodel_explainable/ESM2_AMPS_attention_weights_visualization.py
+python AMPmodel_explainable/AMPmodel_explainable/ESM2_AMPS_attention_weights_visualization.py
 ```
 
 # ESM2_AMP_CSE model Attention weights and visualization
 ```bash
-python AMPmodel_explainable/ESM2_AMP_CSE_attention_weights_visualization.py
+python AMPmodel_explainable/AMPmodel_explainable/ESM2_AMP_CSE_attention_weights_visualization.py
 ```
 
+2.Integrated_Gradients for ESM2_AMPS and ESM2_AMP_CSE
+The Integrated Gradients (IG) method was used to compute feature importance values for both models, followed by analysis.
+
+# ESM2_AMPS model Integrated Gradients and visualization
+```bash
+python AMPmodel_explainable/Integrated_Gradients/ESM2_AMPS_IG_attribution.py
+```
+
+# ESM2_AMP_CSE modelIntegrated Gradients and visualization
+```bash
+python AMPmodel_explainable/Integrated_Gradients/ESM2_AMP_CSE_IG_attribution.py
+```
 
 ##### 截至到这里
 
