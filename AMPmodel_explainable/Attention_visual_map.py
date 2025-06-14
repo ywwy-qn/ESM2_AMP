@@ -57,7 +57,7 @@ class Attention_visualization_diagram:
         plt.title(f'{self.model_name} attention significant map in Layer{self.i+1}')
         
         # Save plot
-        total_plot_path = os.path.join(f'attention_weights/{self.model_name}/total_samples_map')
+        total_plot_path = os.path.join(f'AMPmodel_explainable/attention_weights/{self.model_name}/total_samples_map')
         os.makedirs(total_plot_path, exist_ok=True)
         plt.savefig(os.path.join(total_plot_path, f'{self.model_name} attention significant map in Layer{self.i+1}.pdf'))
         
@@ -87,7 +87,7 @@ class Attention_visualization_diagram:
         plt.title(f'Pair{m+1} {self.model_name} attention significant map in Layer{self.i+1}')
         
         # Save plot
-        single_plot_path = os.path.join(f'attention_weights/{self.model_name}/single_samples_map')
+        single_plot_path = os.path.join(f'AMPmodel_explainable/attention_weights/{self.model_name}/single_samples_map')
         os.makedirs(single_plot_path, exist_ok=True)
         plt.savefig(os.path.join(single_plot_path, f'Pair{m+1} {self.model_name} attention significant map in Layer{self.i+1}.pdf'))
         
