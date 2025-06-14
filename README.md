@@ -89,6 +89,11 @@ python AMPmodel_explainable/Integrated_Gradients/ESM2_AMPS_IG_attribution.py
 ```bash
 python AMPmodel_explainable/Integrated_Gradients/ESM2_AMP_CSE_IG_attribution.py
 ```
+**Note:** Since the baseline is calculated by randomly selected samples when computing the IG values, the final IG values may vary. However, the fundamental point we aim to convey remains valid.
+
+### Feature attribution
+Including AE_RF_GINI, AE_RF_SHAP, AE_DNN_SHAP, AE_DNN_IG.
+
 
 ##### 截至到这里
 
