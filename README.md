@@ -95,12 +95,14 @@ python AMPmodel_explainable/Integrated_Gradients/ESM2_AMP_CSE_IG_attribution.py
 Including segment0-9 features and cls_segment_eos features.
 ### segment0-9 (It can be compared with the interpretable results of the ESM2_AMPS model)
 Including AE_RF_GINI, AE_RF_SHAP, AE_DNN_SHAP, AE_DNN_IG.
+
 1.AE_infer
 The original features are dimensionally reduced by AE to obtain new features.
 ```bash
 python Feature_attribution/segment_0_9/segment_ae_infer.py
 ```
 After running this line of code, the new features will be saved under the path 'Feature_attribution/segment_0_9/AE_output' for use in subsequent steps.
+
 2.AE_DNN_SHAP
 Using DNN as the base classifier, the SHAP feature attribution method is employed to compute feature importance.
 ```bash
@@ -132,18 +134,22 @@ After running this line of code, the plot will be saved under the path 'Feature_
 
 ### cls_segment_eos (It can be compared with the interpretable results of the ESM2_AMP_CSE model)
 Also including AE_RF_GINI, AE_RF_SHAP, AE_DNN_SHAP, AE_DNN_IG.
+
 1.AE_infer
 ```bash
 python Feature_attribution/cls_segment_eos/cls_segment_eos_ae_infer.py
 ```
+
 2.AE_DNN_SHAP
 ```bash
 python Feature_attribution/cls_segment_eos/AE_DNN_SHAP/cls_segment_eos_AE_DNN_SHAP_code.py
 ```
+
 3.AE_DNN_IG
 ```bash
 python Feature_attribution/cls_segment_eos/AE_DNN_IG/cls_segment_eos_AE_DNN_IG_code.py
 ```
+
 4.AE_RF_SHAP
 ```bash
 python Feature_attribution/cls_segment_eos/AE_RF_SHAP/cls_segment_eos_AE_RF_SHAP_bar_plot_code.py
