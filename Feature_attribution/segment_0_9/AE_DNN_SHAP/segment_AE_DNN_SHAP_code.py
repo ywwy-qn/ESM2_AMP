@@ -110,7 +110,7 @@ class SHAPFeatureImportance:
 
 def main():
     open_path = os.path.join('Feature_attribution/segment_0_9/AE_output')
-    save_path = os.path.join('Feature_attribution/segment_0_9/AE_DNN_IG/output')
+    save_path = os.path.join('Feature_attribution/segment_0_9/AE_DNN_SHAP/output')
     os.makedirs(save_path, exist_ok= True)
     # Import data
     feature_all = pd.read_csv(os.path.join(open_path, 'segment_ae_output_pairs_features.csv'))
