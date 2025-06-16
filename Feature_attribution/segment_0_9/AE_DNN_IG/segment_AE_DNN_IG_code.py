@@ -13,9 +13,6 @@ import sys
 project_root = Path(__file__).parent.parent.parent.parent
 sys.path.append(str(project_root))
 
-# current_script_path = Path(__file__).absolute()  # 获取当前脚本的绝对路径
-# project_root = current_script_path.parent.parent.parent  # 根据实际层级调整
-# sys.path.append(str(project_root))
 
 from Feature_attribution.segment_0_9.AE_DNN.DNN_model import DNN
 
