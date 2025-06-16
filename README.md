@@ -49,15 +49,15 @@ pip install .
 ```
 **Note:** In step5, a matching torch version needs to be installed based on the user's own cuda version. The PyTorch link is [PyTorch](https://pytorch.org/get-started/previous-versions/)
 ## model prediction
-# ESM2_AMPS
+### ESM2_AMPS
 ```bash
 python model_pred/ESM2_AMPS_pred.py
 ```
-# ESM2_AMP_CSE
+### ESM2_AMP_CSE
 ```bash
 python model_pred/ESM2_AMP_CSE_pred.py
 ```
-# ESM2_DPM
+### ESM2_DPM
 ```bash
 python model_pred/ESM2_DPM_pred.py
 ```
