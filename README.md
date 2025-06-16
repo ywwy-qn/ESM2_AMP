@@ -62,17 +62,17 @@ python model_pred/ESM2_AMP_CSE_pred.py
 python model_pred/ESM2_DPM_pred.py
 ```
 
-### AMPmodel_explainable
+## AMPmodel_explainable
 
 1.Attention-based Explainable Analysis (Attention_explainable)
 Both models within the **ESM2_AMP** framework utilize the multi-head attention mechanism of the Transformer encoder. By leveraging the weight matrix allocation in the multi-head attention mechanism, the attention weights corresponding to the sample features are extracted, and their feature importance is calculated and quantified.
 
-# ESM2_AMPS model Attention weights and visualization
+### ESM2_AMPS model Attention weights and visualization
 ```bash
 python AMPmodel_explainable/AMPmodel_explainable/ESM2_AMPS_attention_weights_visualization.py
 ```
 
-# ESM2_AMP_CSE model Attention weights and visualization
+### ESM2_AMP_CSE model Attention weights and visualization
 ```bash
 python AMPmodel_explainable/AMPmodel_explainable/ESM2_AMP_CSE_attention_weights_visualization.py
 ```
@@ -80,20 +80,20 @@ python AMPmodel_explainable/AMPmodel_explainable/ESM2_AMP_CSE_attention_weights_
 2.Integrated_Gradients for ESM2_AMPS and ESM2_AMP_CSE
 The Integrated Gradients (IG) method was used to compute feature importance values for both models, followed by analysis.
 
-# ESM2_AMPS model Integrated Gradients and visualization
+### ESM2_AMPS model Integrated Gradients and visualization
 ```bash
 python AMPmodel_explainable/Integrated_Gradients/ESM2_AMPS_IG_attribution.py
 ```
 
-# ESM2_AMP_CSE modelIntegrated Gradients and visualization
+### ESM2_AMP_CSE modelIntegrated Gradients and visualization
 ```bash
 python AMPmodel_explainable/Integrated_Gradients/ESM2_AMP_CSE_IG_attribution.py
 ```
 **Note:** Since the baseline is calculated by randomly selected samples when computing the IG values, the final IG values may vary. However, the fundamental point we aim to convey remains valid.
 
-### Feature attribution
+## Feature attribution
 Including segment0-9 features and cls_segment_eos features.
-# segment0-9 (It can be compared with the interpretable results of the ESM2_AMPS model)
+### segment0-9 (It can be compared with the interpretable results of the ESM2_AMPS model)
 Including AE_RF_GINI, AE_RF_SHAP, AE_DNN_SHAP, AE_DNN_IG.
 1.AE_infer
 The original features are dimensionally reduced by AE to obtain new features.
@@ -130,7 +130,7 @@ python Feature_attribution/segment_0_9/AE_RF_GINI/segment_AE_RF_GINI_bar_plot_co
 After running this line of code, the plot will be saved under the path 'Feature_attribution/segment_0_9/AE_RF_GINI/output'.
 
 
-# cls_segment_eos (It can be compared with the interpretable results of the ESM2_AMP_CSE model)
+### cls_segment_eos (It can be compared with the interpretable results of the ESM2_AMP_CSE model)
 Also including AE_RF_GINI, AE_RF_SHAP, AE_DNN_SHAP, AE_DNN_IG.
 1.AE_infer
 ```bash
