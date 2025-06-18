@@ -69,12 +69,12 @@ Both models within the **ESM2_AMP** framework utilize the multi-head attention m
 
 ### ESM2_AMPS model Attention weights and visualization
 ```bash
-python AMPmodel_explainable/AMPmodel_explainable/ESM2_AMPS_attention_weights_visualization.py
+python AMPmodel_explainable/AMPmodel_explainable/Attention_explainable/ESM2_AMPS_attention_weights_visualization.py
 ```
 
 ### ESM2_AMP_CSE model Attention weights and visualization
 ```bash
-python AMPmodel_explainable/AMPmodel_explainable/ESM2_AMP_CSE_attention_weights_visualization.py
+python AMPmodel_explainable/AMPmodel_explainable/Attention_explainable/ESM2_AMP_CSE_attention_weights_visualization.py
 ```
 
 2.Integrated_Gradients for ESM2_AMPS and ESM2_AMP_CSE
