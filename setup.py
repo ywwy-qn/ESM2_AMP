@@ -1,6 +1,4 @@
 
-
-
 from setuptools import setup
 
 setup(
@@ -20,6 +18,8 @@ setup(
         'optuna==3.6.0',
         'tables==3.10.2',
         'protloc_mex_X==0.0.13',
+        'shap==0.46.0',
+        'captum==0.8.0',
         'matplotlib==3.8.4'
     ],
     extras_require={
@@ -34,6 +34,5 @@ setup(
         'Operating System :: OS Independent',
     ],
     python_requires='>=3.11',  
-    packages=['AMPmodel', 'model_pred', 'AMPmodel_explainable'],
+    packages=['esm2_infer_feature', 'AMPmodel', 'model_pred', 'AMPmodel_explainable'],
 )
-
