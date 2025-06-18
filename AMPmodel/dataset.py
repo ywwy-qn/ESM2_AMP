@@ -12,7 +12,7 @@ class CustomDataset(Dataset):
         else:
             self.features = torch.tensor(data_features.values).float().to(device)
 
-        assert len(data_features) == len(data_label), "特征和标签数据的样本数量不匹配！"
+        assert len(data_features) == len(data_label), "The sample size of the feature and label data does not match！"
         self.labels = torch.tensor(data_label.values).float().to(device)
 
     def __len__(self):
