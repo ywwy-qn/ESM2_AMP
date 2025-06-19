@@ -93,133 +93,6 @@ python AMPmodel_explainable/Integrated_Gradients/ESM2_AMP_CSE_IG_attribution.py
 
 ## Feature attribution
 Including segment0-9 features and cls_segment_eos features.
-### segment0-9 (It can be compared with the interpretable results of the ESM2_AMPS model)
-Including AE_RF_GINI, AE_RF_SHAP, AE_DNN_SHAP, AE_DNN_IG.
-
-1.AE_infer
-The original features are dimensionally reduced by AE to obtain new features.
-```bash
-python Feature_attribution/segment_0_9/segment_ae_infer.py
-```
-After running this line of code, the new features will be saved under the path 'Feature_attribution/segment_0_9/AE_output' for use in subsequent steps.
-
-2.AE_DNN_SHAP
-Using DNN as the base classifier, the SHAP feature attribution method is employed to compute feature importance.
-```bash
-python Feature_attribution/segment_0_9/AE_DNN_SHAP/segment_AE_DNN_SHAP_code.py
-```
-After running this line of code, the plot will be saved under the path 'Feature_attribution/segment_0_9/AE_DNN_SHAP/output'.
-
-3.AE_DNN_IG
-Using DNN as the base classifier, the IG feature attribution method is employed to compute feature importance.
-```bash
-python Feature_attribution/segment_0_9/AE_DNN_IG/segment_AE_DNN_IG_code.py
-```
-After running this line of code, the plot will be saved under the path 'Feature_attribution/segment_0_9/AE_DNN_IG/output'.
-
-4.AE_RF_SHAP
-Using RF as the base classifier, the SHAP feature attribution method is employed to compute feature importance.
-```bash
-python Feature_attribution/segment_0_9/AE_RF_SHAP/segment_AE_RF_SHAP_bar_plot_code.py
-```
-After running this line of code, the plot will be saved under the path 'Feature_attribution/segment_0_9/AE_RF_SHAP/output'.
-
-5.AE_RF_GINI
-Using RF as the base classifier, calculate gini importance.
-```bash
-python Feature_attribution/segment_0_9/AE_RF_GINI/segment_AE_RF_GINI_bar_plot_code.py
-```
-After running this line of code, the plot will be saved under the path 'Feature_attribution/segment_0_9/AE_RF_GINI/output'.
-
-
-### cls_segment_eos (It can be compared with the interpretable results of the ESM2_AMP_CSE model)
-Also including AE_RF_GINI, AE_RF_SHAP, AE_DNN_SHAP, AE_DNN_IG.
-
-1.AE_infer
-```bash
-python Feature_attribution/cls_segment_eos/cls_segment_eos_ae_infer.py
-```
-
-2.AE_DNN_SHAP
-```bash
-python Feature_attribution/cls_segment_eos/AE_DNN_SHAP/cls_segment_eos_AE_DNN_SHAP_code.py
-```
-
-3.AE_DNN_IG
-```bash
-python Feature_attribution/cls_segment_eos/AE_DNN_IG/cls_segment_eos_AE_DNN_IG_code.py
-```
-
-4.AE_RF_SHAP
-```bash
-python Feature_attribution/cls_segment_eos/AE_RF_SHAP/cls_segment_eos_AE_RF_SHAP_bar_plot_code.py
-```
-
-5.AE_RF_GINI
-```bash
-python Feature_attribution/cls_segment_eos/AE_RF_GINI/cls_segment_eos_AE_RF_GINI_bar_plot_code.py
-```
-
-##### 截至到这里
-
-
-
-
-**Note**: you also can directly use the portable version of protloc-mex-x provided in this project (available [here](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Dataset_work)). Simply ensure `Python >= 3.10` and `torch >= 1.12.1` to properly utilize the protein sequence extraction workflow based on **ESM2_650m** in this project.
-
-## Model Usage
-
-This project provides ready-to-use implementations of the **ESM2_AMPS**, **ESM2_AMP_CSE**, and **ESM2_GRU** models (ensure your environment meets the requirements):  
-
-```bash  
-# Clone the project  
-git clone https://github.com/ywwy-qn/ESM2_AMP.git  
-
-conda activate env  # Replace with your local environment name  
-cd your_path_to_project/ESM2_AMP # Navigate to the project directory  
-
-# Step 1: Extract protein sequence features using ESM2 and preprocess data  
-python ./Dataset_work/code/dataprocessing_scrip.py --sequence_file "Dataset_work/dataset/Sample_dataset/sample_proteins.xlsx" --pairs_file "Dataset_work/dataset/Sample_dataset/sample_pairs.xlsx"  
-
-# Step 2: Perform inference using the model. Available models: "ESM2_AMPS", "ESM2_AMP_CSE", "ESM2_DPM"  
-python ./Model_work/prediction_script.py --model "ESM2_AMPS" #--model_w "Model_work/ESM2_AMPS/weight.pth"  
-```
-
-**Important Notes**:  
-• The provided data is example data. For personal data usage, strictly follow the format and data types of the [sample data](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Dataset_work/dataset/Sample_dataset).  
-
-• For model inference, if you need to specify custom model weights, use the `--model_w` parameter in Step 2. The weight file could be foud on [figshare](https://figshare.com/articles/dataset/ESM2_AMP/28378157).
-
-• For advanced operations, refer to the detailed documentation in [Dataset_work](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Model_work) and [Model_work](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Model_work).
-
-## Dataset Availability
-
-This project provides training datasets and independent test sets for researchers to explore further. All data resources can be accessed in the [Datasets](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Datasets#dataset) section. Detailed information on methods for extracting feature representations from protein sequences can be found in the published research paper (DOI: https://doi.org/10.1093/bib/bbad534), as well as in the corresponding GitHub repository: [Feature Representation for LLMs](https://github.com/yujuan-zhang/feature-representation-for-LLMs?tab=readme-ov-file#feature-representation-model). For detailed information on the extraction of feature embeddings for specific proteins, please refer to the Python library protloc-mex-x (https://pypi.org/project/protloc-mex-x/).
-
-## Methods
-
-### Feature representation
-The proteins' feature representation used the pre-trained protein model ESM2 developed by Meta company and placed on Hugging Face. For more details, please search in https://huggingface.co/facebook/esm2_t33_650M_UR50D. Besides, we used [protloc-mex-x](https://pypi.org/project/protloc_mex_X/) which our team developed, containing detail for `'cls'`,`'mean'`, `'eos'`,`'segment 0-9'` feature representation from ESM2. For details on the protein sequence extraction code, please refer to [here](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Dataset_work/code/dataprocessing_scrip.py).
-
-### Models
-
-This project encompasses a series of models, including **ESM2_AMPS**, **ESM2_AMP_CSE**, and **ESM2_DPM** ( [Details](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Models/README.md) ), aimed at providing comprehensive support for predicting protein interactions. Example inference code for each model is provided within their respective directories, while the required model weight files can be downloaded from the project's corresponding [figshare](https://figshare.com/articles/dataset/ESM2_AMP/28378157) page.
-
-### Model training
-
-During model training, Optuna is primarily employed for **Bayesian optimization-based hyperparameter selection using the Tree-structured Parzen Estimator (TPE) algorithm**, with key details as follows:
-
-- In **ESM2_AMPS** model training process, the learning rate was tuned within the range of 1e-5 to 1e-3, while the weight decay was adjusted between 1e-4 and 1e-2. For the MLP module, the first hidden layer size was varied from 480 to 640 with a step size of 160, and the second hidden layer size was explored from 80 to 320 with a step size of 80. Here are the code [details](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Model_work/ESM2_AMPS/optuna_train_5fold.py) and [result](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Model_work/ESM2_AMPS/config.yaml).
-- **ESM2_AMP_CSE** model maintained these parameters but extended the weight decay range to 1e-4-1e-1. Here are the code details and [result](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Model_work/ESM2_AMP_CSE/config.yaml).
-- In **ESM2_DPM** model training process, the learning rate was tuned within the range of 1e-6 to 1e-5, while the weight decay was adjusted between 1e-3 and 1e-1. For the DNN module, the first hidden layer size varied from 960 to 1280 with a step size of 320, the second hidden layer size was explored from 320 to 640 with a step size of 160, and the last layer was 40 to 160 with 60 steps. Here are the code details and [result](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Model_work/ESM2_DPM/config.yaml).
-
-### Model evaluation
-
-During the model evaluation phase, multiple metrics such as **Accuracy**, **MCC**, **Recall**, **F1 score**, and **Precision** are used to assess the model's performance.The evaluation metrics and calculation methods are shown in [code](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Model_work/AMPmodel/check.py). 
-
-
-
-### Feature attribution interpretable method
 
 #### model constructing
 
@@ -431,6 +304,178 @@ class IGFeatureImportance:
 
         return grouped_attributions, unique_prefixes
 ```
+**The following are the implementations of several specific feature attribution methods.**
+### segment0-9 (It can be compared with the interpretable results of the ESM2_AMPS model)
+Including AE_RF_GINI, AE_RF_SHAP, AE_DNN_SHAP, AE_DNN_IG.
+
+1.AE_infer
+The original features are dimensionally reduced by AE to obtain new features.
+```bash
+python Feature_attribution/segment_0_9/segment_ae_infer.py
+```
+After running this line of code, the new features will be saved under the path 'Feature_attribution/segment_0_9/AE_output' for use in subsequent steps.
+
+2.AE_DNN_SHAP
+Using DNN as the base classifier, the SHAP feature attribution method is employed to compute feature importance.
+```bash
+python Feature_attribution/segment_0_9/AE_DNN_SHAP/segment_AE_DNN_SHAP_code.py
+```
+After running this line of code, the plot will be saved under the path 'Feature_attribution/segment_0_9/AE_DNN_SHAP/output'.
+
+3.AE_DNN_IG
+Using DNN as the base classifier, the IG feature attribution method is employed to compute feature importance.
+```bash
+python Feature_attribution/segment_0_9/AE_DNN_IG/segment_AE_DNN_IG_code.py
+```
+After running this line of code, the plot will be saved under the path 'Feature_attribution/segment_0_9/AE_DNN_IG/output'.
+
+4.AE_RF_SHAP
+Using RF as the base classifier, the SHAP feature attribution method is employed to compute feature importance.
+```bash
+python Feature_attribution/segment_0_9/AE_RF_SHAP/segment_AE_RF_SHAP_bar_plot_code.py
+```
+After running this line of code, the plot will be saved under the path 'Feature_attribution/segment_0_9/AE_RF_SHAP/output'.
+
+5.AE_RF_GINI
+Using RF as the base classifier, calculate gini importance.
+```bash
+python Feature_attribution/segment_0_9/AE_RF_GINI/segment_AE_RF_GINI_bar_plot_code.py
+```
+After running this line of code, the plot will be saved under the path 'Feature_attribution/segment_0_9/AE_RF_GINI/output'.
+
+
+### cls_segment_eos (It can be compared with the interpretable results of the ESM2_AMP_CSE model)
+Also including AE_RF_GINI, AE_RF_SHAP, AE_DNN_SHAP, AE_DNN_IG.
+
+1.AE_infer
+```bash
+python Feature_attribution/cls_segment_eos/cls_segment_eos_ae_infer.py
+```
+
+2.AE_DNN_SHAP
+```bash
+python Feature_attribution/cls_segment_eos/AE_DNN_SHAP/cls_segment_eos_AE_DNN_SHAP_code.py
+```
+
+3.AE_DNN_IG
+```bash
+python Feature_attribution/cls_segment_eos/AE_DNN_IG/cls_segment_eos_AE_DNN_IG_code.py
+```
+
+4.AE_RF_SHAP
+```bash
+python Feature_attribution/cls_segment_eos/AE_RF_SHAP/cls_segment_eos_AE_RF_SHAP_bar_plot_code.py
+```
+
+5.AE_RF_GINI
+```bash
+python Feature_attribution/cls_segment_eos/AE_RF_GINI/cls_segment_eos_AE_RF_GINI_bar_plot_code.py
+```
+
+## Identification_computational_methods_of_functional_AA_regions
+This section focuses on quantifying the attention weights of the ESM2_AMPS model that only contains segment features, followed by detailed calculations of the coverage and hit rates of functional amino acid regions in each segment of the samples in the independent test set.
+
+We have provided samples in the **data** directory categorized into four types based on prediction results (true positives, false positives, false negatives, and true negatives). For each of these categories, we calculate the coverage and hit rates. The **Total_information_protein** directory contains functional region information for protein amino acid sequences recorded in public databases. 
+The **code** directory contains the relevant code for this section:
+
+### step1: Calculate the coverage rate.
+This step consists of two scripts: one for calculating the coverage of the Top three segments and another for the Low three segments. These scripts compute both the overall functional amino acid region coverage and the coverage for five specific types: "Domain", "Region", "Compositional bias", "Repeat", and "Motif".
+```bash
+python Identification_computational_methods_of_functional_AA_regions/code/coverage_Top_computational_process.py
+python Identification_computational_methods_of_functional_AA_regions/code/coverage_Low_computational_process.py
+```
+After running the scripts, the results will be saved in Excel format in the **database_uniprot_out** directory.
+
+### step2: Calculate the hit rate.
+Based on the coverage calculated in the previous step, different thresholds are set to determine whether samples in each category (TP, FP, TN, FN) hit functional regions, and the hit rate of samples in each category is computed. Similarly, there are two separate scripts for Top and Low segments.
+```bash
+python Identification_computational_methods_of_functional_AA_regions/code/calculation_of_Top_hit_rate.py
+python Identification_computational_methods_of_functional_AA_regions/code/calculation_of_Low_hit_rate.py
+```
+After running the scripts, the results will be saved in Excel format in the **database_uniprot_out** directory.
+
+### step3: Visualization.
+Based on the obtained coverage results, the data is divided into ten coverage intervals for visualization. The visualization is implemented through two separate scripts:
+
+1. visualization.py - Generates plots specifically for either Top three or Low three segments
+2. visualization2.py - Creates comparative visualizations between Top and Low segments
+```bash
+python Identification_computational_methods_of_functional_AA_regions/code/visualization.py
+python Identification_computational_methods_of_functional_AA_regions/code/visualization2.py
+```
+After running the scripts, the plots will be saved in Pdf format in the **database_uniprot_out** directory.
+
+## Protein feature extraction
+Additionally, we provide code in the **esm2_infer_feature** directory that enables feature extraction from protein amino acid sequences using the **ESM2** model. For ease of use, we have included sample data in the **data** directory as examples, along with the corresponding scripts to perform the feature extraction.
+```bash
+python esm2_infer_feature/esm2_infer_features_example.py
+```
+After running the scripts, the features' file will be saved in the **output** directory.
+
+**Note:** If you want to extract the features of your proteins, you can replace the sample data in **data** with your own data and then run the script to achieve it.
+
+
+##### 截至到这里
+
+
+
+
+**Note**: you also can directly use the portable version of protloc-mex-x provided in this project (available [here](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Dataset_work)). Simply ensure `Python >= 3.10` and `torch >= 1.12.1` to properly utilize the protein sequence extraction workflow based on **ESM2_650m** in this project.
+
+## Model Usage
+
+This project provides ready-to-use implementations of the **ESM2_AMPS**, **ESM2_AMP_CSE**, and **ESM2_GRU** models (ensure your environment meets the requirements):  
+
+```bash  
+# Clone the project  
+git clone https://github.com/ywwy-qn/ESM2_AMP.git  
+
+conda activate env  # Replace with your local environment name  
+cd your_path_to_project/ESM2_AMP # Navigate to the project directory  
+
+# Step 1: Extract protein sequence features using ESM2 and preprocess data  
+python ./Dataset_work/code/dataprocessing_scrip.py --sequence_file "Dataset_work/dataset/Sample_dataset/sample_proteins.xlsx" --pairs_file "Dataset_work/dataset/Sample_dataset/sample_pairs.xlsx"  
+
+# Step 2: Perform inference using the model. Available models: "ESM2_AMPS", "ESM2_AMP_CSE", "ESM2_DPM"  
+python ./Model_work/prediction_script.py --model "ESM2_AMPS" #--model_w "Model_work/ESM2_AMPS/weight.pth"  
+```
+
+**Important Notes**:  
+• The provided data is example data. For personal data usage, strictly follow the format and data types of the [sample data](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Dataset_work/dataset/Sample_dataset).  
+
+• For model inference, if you need to specify custom model weights, use the `--model_w` parameter in Step 2. The weight file could be foud on [figshare](https://figshare.com/articles/dataset/ESM2_AMP/28378157).
+
+• For advanced operations, refer to the detailed documentation in [Dataset_work](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Model_work) and [Model_work](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Model_work).
+
+## Dataset Availability
+
+This project provides training datasets and independent test sets for researchers to explore further. All data resources can be accessed in the [Datasets](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Datasets#dataset) section. Detailed information on methods for extracting feature representations from protein sequences can be found in the published research paper (DOI: https://doi.org/10.1093/bib/bbad534), as well as in the corresponding GitHub repository: [Feature Representation for LLMs](https://github.com/yujuan-zhang/feature-representation-for-LLMs?tab=readme-ov-file#feature-representation-model). For detailed information on the extraction of feature embeddings for specific proteins, please refer to the Python library protloc-mex-x (https://pypi.org/project/protloc-mex-x/).
+
+## Methods
+
+### Feature representation
+The proteins' feature representation used the pre-trained protein model ESM2 developed by Meta company and placed on Hugging Face. For more details, please search in https://huggingface.co/facebook/esm2_t33_650M_UR50D. Besides, we used [protloc-mex-x](https://pypi.org/project/protloc_mex_X/) which our team developed, containing detail for `'cls'`,`'mean'`, `'eos'`,`'segment 0-9'` feature representation from ESM2. For details on the protein sequence extraction code, please refer to [here](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Dataset_work/code/dataprocessing_scrip.py).
+
+### Models
+
+This project encompasses a series of models, including **ESM2_AMPS**, **ESM2_AMP_CSE**, and **ESM2_DPM** ( [Details](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Models/README.md) ), aimed at providing comprehensive support for predicting protein interactions. Example inference code for each model is provided within their respective directories, while the required model weight files can be downloaded from the project's corresponding [figshare](https://figshare.com/articles/dataset/ESM2_AMP/28378157) page.
+
+### Model training
+
+During model training, Optuna is primarily employed for **Bayesian optimization-based hyperparameter selection using the Tree-structured Parzen Estimator (TPE) algorithm**, with key details as follows:
+
+- In **ESM2_AMPS** model training process, the learning rate was tuned within the range of 1e-5 to 1e-3, while the weight decay was adjusted between 1e-4 and 1e-2. For the MLP module, the first hidden layer size was varied from 480 to 640 with a step size of 160, and the second hidden layer size was explored from 80 to 320 with a step size of 80. Here are the code [details](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Model_work/ESM2_AMPS/optuna_train_5fold.py) and [result](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Model_work/ESM2_AMPS/config.yaml).
+- **ESM2_AMP_CSE** model maintained these parameters but extended the weight decay range to 1e-4-1e-1. Here are the code details and [result](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Model_work/ESM2_AMP_CSE/config.yaml).
+- In **ESM2_DPM** model training process, the learning rate was tuned within the range of 1e-6 to 1e-5, while the weight decay was adjusted between 1e-3 and 1e-1. For the DNN module, the first hidden layer size varied from 960 to 1280 with a step size of 320, the second hidden layer size was explored from 320 to 640 with a step size of 160, and the last layer was 40 to 160 with 60 steps. Here are the code details and [result](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Model_work/ESM2_DPM/config.yaml).
+
+### Model evaluation
+
+During the model evaluation phase, multiple metrics such as **Accuracy**, **MCC**, **Recall**, **F1 score**, and **Precision** are used to assess the model's performance.The evaluation metrics and calculation methods are shown in [code](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Model_work/AMPmodel/check.py). 
+
+
+
+### Feature attribution interpretable method
+
 
 ### Identification and computational methods of functional amino acid regions
 To explore the potential association between feature attention weights and specific residues or residue regions, this study conducted a detailed analysis of the **ESM2_AMPS** model, which relies solely on local features of fragments. Based on samples from the **real_test** dataset, the top three features with the highest weight values in each sample were first identified, and the proportion of their coverage of functional amino acid sequences was calculated. Meanwhile, the three features with the lowest weights were selected as a negative control group for comparison. Information on functional amino acid regions for all proteins in the dataset was obtained from the **UniProt** and **InterPro** databases.
