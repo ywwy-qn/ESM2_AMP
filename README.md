@@ -48,7 +48,9 @@ pip install torch==2.0.1+cu118 torchvision==0.15.2+cu118 torchaudio==2.0.2+cu118
 pip install .
 ```
 **Note:** In step5, a matching torch version needs to be installed based on the user's own cuda version. The PyTorch link is [PyTorch](https://pytorch.org/get-started/previous-versions/)
+
 ## model prediction
+During the model prediction phase, multiple metrics such as **Accuracy**, **MCC**, **Recall**, **F1 score**, and **Precision** are used to assess the model's performance.The evaluation metrics and calculation methods are shown in [code](https://github.com/ywwy-qn/ESM2_AMP/AMPmodel/check.py). The implementation code of the model prediction is in the **model_pred** directory, and the implementation process is as follows:
 ### ESM2_AMPS
 ```bash
 python model_pred/ESM2_AMPS_pred.py
@@ -468,9 +470,7 @@ During model training, Optuna is primarily employed for **Bayesian optimization-
 - **ESM2_AMP_CSE** model maintained these parameters but extended the weight decay range to 1e-4-1e-1. Here are the code details and [result](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Model_work/ESM2_AMP_CSE/config.yaml).
 - In **ESM2_DPM** model training process, the learning rate was tuned within the range of 1e-6 to 1e-5, while the weight decay was adjusted between 1e-3 and 1e-1. For the DNN module, the first hidden layer size varied from 960 to 1280 with a step size of 320, the second hidden layer size was explored from 320 to 640 with a step size of 160, and the last layer was 40 to 160 with 60 steps. Here are the code details and [result](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Model_work/ESM2_DPM/config.yaml).
 
-### Model evaluation
 
-During the model evaluation phase, multiple metrics such as **Accuracy**, **MCC**, **Recall**, **F1 score**, and **Precision** are used to assess the model's performance.The evaluation metrics and calculation methods are shown in [code](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Model_work/AMPmodel/check.py). 
 
 
 
