@@ -308,7 +308,7 @@ class IGFeatureImportance:
 ```
 **The following are the implementations of several specific feature attribution methods.**
 ### segment0-9 (It can be compared with the interpretable results of the ESM2_AMPS model)
-Including AE_RF_GINI, AE_RF_SHAP, AE_DNN_SHAP, AE_DNN_IG.
+Including AE_RF_Gini, AE_RF_SHAP, AE_DNN_SHAP, AE_DNN_IG.
 
 1.AE_infer
 The original features are dimensionally reduced by AE to obtain new features.
@@ -338,16 +338,16 @@ python Feature_attribution/segment_0_9/AE_RF_SHAP/segment_AE_RF_SHAP_bar_plot_co
 ```
 After running this line of code, the plot will be saved under the path 'Feature_attribution/segment_0_9/AE_RF_SHAP/output'.
 
-5.AE_RF_GINI
+5.AE_RF_Gini
 Using RF as the base classifier, calculate gini importance.
 ```bash
-python Feature_attribution/segment_0_9/AE_RF_GINI/segment_AE_RF_GINI_bar_plot_code.py
+python Feature_attribution/segment_0_9/AE_RF_Gini/segment_AE_RF_Gini_bar_plot_code.py
 ```
-After running this line of code, the plot will be saved under the path 'Feature_attribution/segment_0_9/AE_RF_GINI/output'.
+After running this line of code, the plot will be saved under the path 'Feature_attribution/segment_0_9/AE_RF_Gini/output'.
 
 
 ### cls_segment_eos (It can be compared with the interpretable results of the ESM2_AMP_CSE model)
-Also including AE_RF_GINI, AE_RF_SHAP, AE_DNN_SHAP, AE_DNN_IG.
+Also including AE_RF_Gini, AE_RF_SHAP, AE_DNN_SHAP, AE_DNN_IG.
 
 1.AE_infer
 ```bash
@@ -369,9 +369,9 @@ python Feature_attribution/cls_segment_eos/AE_DNN_IG/cls_segment_eos_AE_DNN_IG_c
 python Feature_attribution/cls_segment_eos/AE_RF_SHAP/cls_segment_eos_AE_RF_SHAP_bar_plot_code.py
 ```
 
-5.AE_RF_GINI
+5.AE_RF_Gini
 ```bash
-python Feature_attribution/cls_segment_eos/AE_RF_GINI/cls_segment_eos_AE_RF_GINI_bar_plot_code.py
+python Feature_attribution/cls_segment_eos/AE_RF_Gini/cls_segment_eos_AE_RF_Gini_bar_plot_code.py
 ```
 
 ## Identification_computational_methods_of_functional_AA_regions
