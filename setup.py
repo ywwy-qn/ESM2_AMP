@@ -34,5 +34,6 @@ setup(
         'Operating System :: OS Independent',
     ],
     python_requires='>=3.11',  
-    packages=['esm2_infer_feature', 'AMPmodel', 'model_pred', 'AMPmodel_explainable', 'Identification_computational_methods_of functional_AA_regions'],
+    packages=['esm2_infer_feature', 'AMPmodel', 'model_pred', 'AMPmodel_explainable', 'Identification_computational_methods_of functional_AA_regions', 
+              'Ablation_experiment', 'Comparison_model'],
 )
