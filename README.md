@@ -49,8 +49,25 @@ pip install .
 ```
 **Note:** In step5, a matching torch version needs to be installed based on the user's own cuda version. The PyTorch link is [PyTorch](https://pytorch.org/get-started/previous-versions/)
 
+Model founding: including ESM2_AMPS, ESM2_AMP_CSE, ESM2_DPM, ESM2_GRU and the ablation experiment.
+
+In the **model** script in the AMPmodel directory, the encoder_type is set with three options. 
+
+When encoder_type == 'transformer', the ESM2_AMPS and ESM2_AMP_CSE models with transformer are built.
+
+The design differences between the ESM2_AMPS and ESM2_AMP_CSE models mainly lie in the data selection and the dimensions of the dataset, which are primarily reflected in the **AMPmodel/dataset** script.
+
+ESM2_DPM: The global pooling features of the sequence are selected, referred to as ESM2_mean, with a **DNN** used as the downstream classifier.
+
+ESM2_GRU: The transformer module is replaced with **GRU**. When encoder_type == 'gru', it becomes the ESM2_GRU model.
+
+Ablation experiment: In the **ablation experiment**, we removed the transformer encoder part and only included the global pooling operation. Therefore, in this model, encoder_type == 'mean'.
+
+The function encapsulation in the **AMPmodel/check** script for the evalution of the model and the saving of parameters during training, etc.
+
 ## model prediction
 During the model prediction phase, multiple metrics such as **Accuracy**, **MCC**, **Recall**, **F1 score**, and **Precision** are used to assess the model's performance.The evaluation metrics and calculation methods are shown in [code](https://github.com/ywwy-qn/ESM2_AMP/AMPmodel/check.py). The implementation code of the model prediction is in the **model_pred** directory, and the implementation process is as follows:
+
 ### ESM2_AMPS
 ```bash
 python model_pred/ESM2_AMPS_pred.py
@@ -63,6 +80,11 @@ python model_pred/ESM2_AMP_CSE_pred.py
 ```bash
 python model_pred/ESM2_DPM_pred.py
 ```
+对比模型与消融实验
+
+
+
+
 
 ## AMPmodel_explainable
 
