@@ -49,7 +49,12 @@ pip install .
 ```
 **Note:** In step5, a matching torch version needs to be installed based on the user's own cuda version. The PyTorch link is [PyTorch](https://pytorch.org/get-started/previous-versions/)
 
-Model founding: including ESM2_AMPS, ESM2_AMP_CSE, ESM2_DPM, ESM2_GRU and the ablation experiment.
+## Dataset Availability
+
+This project provides training datasets and independent test sets for researchers to explore further. All data resources can be accessed in the [Datasets](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Datasets#dataset) section. Detailed information on methods for extracting feature representations from protein sequences can be found in the published research paper (DOI: https://doi.org/10.1093/bib/bbad534), as well as in the corresponding GitHub repository: [Feature Representation for LLMs](https://github.com/yujuan-zhang/feature-representation-for-LLMs?tab=readme-ov-file#feature-representation-model). For detailed information on the extraction of feature embeddings for specific proteins, please refer to the Python library protloc-mex-x (https://pypi.org/project/protloc-mex-x/).
+
+Model founding: 
+This project provides ready-to-use implementations of the **ESM2_AMPS**, **ESM2_AMP_CSE**, **ESM2_DPM**, and **ESM2_GRU** models (ensure your environment meets the upon requirements). 
 
 In the **model** script in the AMPmodel directory, the encoder_type is set with three options. 
 
@@ -80,7 +85,7 @@ python model_pred/ESM2_AMP_CSE_pred.py
 ```bash
 python model_pred/ESM2_DPM_pred.py
 ```
-对比模型与消融实验
+对比模型
 
 
 
@@ -397,6 +402,13 @@ python Feature_attribution/cls_segment_eos/AE_RF_Gini/cls_segment_eos_AE_RF_Gini
 ```
 
 ## Identification_computational_methods_of_functional_AA_regions
+To explore the potential association between feature attention weights and specific residues or residue regions, this study conducted a detailed analysis of the **ESM2_AMPS** model, which relies solely on local features of fragments. Based on samples from the **real_test** dataset, the top three features with the highest weight values in each sample were first identified, and the proportion of their coverage of functional amino acid sequences was calculated. Meanwhile, the three features with the lowest weights were selected as a negative control group for comparison. Information on functional amino acid regions for all proteins in the dataset was obtained from the **UniProt** and **InterPro** databases.
+
+- When analyzing based on the **UniProt** database, the selected functional amino acid region types included: **"Domain"**, **"Region"**, **"Compositional bias"**, **"Repeat"**, and **"Motif"**.
+- When analyzing based on the **InterPro** database, the selected functional amino acid region types included: **"Domain"**, **"Repeat"**, **"Active_site"**, **"Binding_site"**, **"Conserved_site"**, and **"Ptm"** (Note: **"Homologous_superfamily"** and **"Family"** were not included in the calculations, as they belong to classification-level special sequence fragments).
+
+Here is the code [detail](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Identification%20and%20computational%20methods%20of%20functional%20amino%20acid%20regions).
+
 This section focuses on quantifying the attention weights of the ESM2_AMPS model that only contains segment features, followed by detailed calculations of the coverage and hit rates of functional amino acid regions in each segment of the samples in the independent test set.
 
 We have provided samples in the **data** directory categorized into four types based on prediction results (true positives, false positives, false negatives, and true negatives). For each of these categories, we calculate the coverage and hit rates. The **Total_information_protein** directory contains functional region information for protein amino acid sequences recorded in public databases. 
@@ -429,8 +441,10 @@ python Identification_computational_methods_of_functional_AA_regions/code/visual
 ```
 After running the scripts, the plots will be saved in Pdf format in the **database_uniprot_out** directory.
 
-## Protein feature extraction
-Additionally, we provide code in the **esm2_infer_feature** directory that enables feature extraction from protein amino acid sequences using the **ESM2** model. For ease of use, we have included sample data in the **data** directory as examples, along with the corresponding scripts to perform the feature extraction.
+## Feature representation
+Additionally, we provide code in the **esm2_infer_feature** directory that enables feature extraction from protein amino acid sequences using the **ESM2** model. 
+
+The proteins' feature representation used the pre-trained protein model ESM2 developed by Meta company and placed on Hugging Face. For more details, please search in https://huggingface.co/facebook/esm2_t33_650M_UR50D. Besides, we used [protloc-mex-x](https://pypi.org/project/protloc_mex_X/) which our team developed, containing detail for `'cls'`,`'mean'`, `'eos'`,`'segment 0-9'` feature representation from ESM2. For ease of use, we have included sample data in the **data** directory as examples, along with the corresponding scripts to perform the feature extraction.
 ```bash
 python esm2_infer_feature/esm2_infer_features_example.py
 ```
@@ -444,45 +458,17 @@ After running the scripts, the features' file will be saved in the **output** di
 
 
 
-**Note**: you also can directly use the portable version of protloc-mex-x provided in this project (available [here](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Dataset_work)). Simply ensure `Python >= 3.10` and `torch >= 1.12.1` to properly utilize the protein sequence extraction workflow based on **ESM2_650m** in this project.
 
-## Model Usage
 
-This project provides ready-to-use implementations of the **ESM2_AMPS**, **ESM2_AMP_CSE**, and **ESM2_GRU** models (ensure your environment meets the requirements):  
 
-```bash  
-# Clone the project  
-git clone https://github.com/ywwy-qn/ESM2_AMP.git  
-
-conda activate env  # Replace with your local environment name  
-cd your_path_to_project/ESM2_AMP # Navigate to the project directory  
-
-# Step 1: Extract protein sequence features using ESM2 and preprocess data  
-python ./Dataset_work/code/dataprocessing_scrip.py --sequence_file "Dataset_work/dataset/Sample_dataset/sample_proteins.xlsx" --pairs_file "Dataset_work/dataset/Sample_dataset/sample_pairs.xlsx"  
-
-# Step 2: Perform inference using the model. Available models: "ESM2_AMPS", "ESM2_AMP_CSE", "ESM2_DPM"  
-python ./Model_work/prediction_script.py --model "ESM2_AMPS" #--model_w "Model_work/ESM2_AMPS/weight.pth"  
-```
 
 **Important Notes**:  
 • The provided data is example data. For personal data usage, strictly follow the format and data types of the [sample data](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Dataset_work/dataset/Sample_dataset).  
 
 • For model inference, if you need to specify custom model weights, use the `--model_w` parameter in Step 2. The weight file could be foud on [figshare](https://figshare.com/articles/dataset/ESM2_AMP/28378157).
 
-• For advanced operations, refer to the detailed documentation in [Dataset_work](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Model_work) and [Model_work](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Model_work).
 
-## Dataset Availability
 
-This project provides training datasets and independent test sets for researchers to explore further. All data resources can be accessed in the [Datasets](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Datasets#dataset) section. Detailed information on methods for extracting feature representations from protein sequences can be found in the published research paper (DOI: https://doi.org/10.1093/bib/bbad534), as well as in the corresponding GitHub repository: [Feature Representation for LLMs](https://github.com/yujuan-zhang/feature-representation-for-LLMs?tab=readme-ov-file#feature-representation-model). For detailed information on the extraction of feature embeddings for specific proteins, please refer to the Python library protloc-mex-x (https://pypi.org/project/protloc-mex-x/).
-
-## Methods
-
-### Feature representation
-The proteins' feature representation used the pre-trained protein model ESM2 developed by Meta company and placed on Hugging Face. For more details, please search in https://huggingface.co/facebook/esm2_t33_650M_UR50D. Besides, we used [protloc-mex-x](https://pypi.org/project/protloc_mex_X/) which our team developed, containing detail for `'cls'`,`'mean'`, `'eos'`,`'segment 0-9'` feature representation from ESM2. For details on the protein sequence extraction code, please refer to [here](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Dataset_work/code/dataprocessing_scrip.py).
-
-### Models
-
-This project encompasses a series of models, including **ESM2_AMPS**, **ESM2_AMP_CSE**, and **ESM2_DPM** ( [Details](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Models/README.md) ), aimed at providing comprehensive support for predicting protein interactions. Example inference code for each model is provided within their respective directories, while the required model weight files can be downloaded from the project's corresponding [figshare](https://figshare.com/articles/dataset/ESM2_AMP/28378157) page.
 
 ### Model training
 
@@ -493,19 +479,6 @@ During model training, Optuna is primarily employed for **Bayesian optimization-
 - In **ESM2_DPM** model training process, the learning rate was tuned within the range of 1e-6 to 1e-5, while the weight decay was adjusted between 1e-3 and 1e-1. For the DNN module, the first hidden layer size varied from 960 to 1280 with a step size of 320, the second hidden layer size was explored from 320 to 640 with a step size of 160, and the last layer was 40 to 160 with 60 steps. Here are the code details and [result](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Model_work/ESM2_DPM/config.yaml).
 
 
-
-
-
-### Feature attribution interpretable method
-
-
-### Identification and computational methods of functional amino acid regions
-To explore the potential association between feature attention weights and specific residues or residue regions, this study conducted a detailed analysis of the **ESM2_AMPS** model, which relies solely on local features of fragments. Based on samples from the **real_test** dataset, the top three features with the highest weight values in each sample were first identified, and the proportion of their coverage of functional amino acid sequences was calculated. Meanwhile, the three features with the lowest weights were selected as a negative control group for comparison. Information on functional amino acid regions for all proteins in the dataset was obtained from the **UniProt** and **InterPro** databases.
-
-- When analyzing based on the **UniProt** database, the selected functional amino acid region types included: **"Domain"**, **"Region"**, **"Compositional bias"**, **"Repeat"**, and **"Motif"**.
-- When analyzing based on the **InterPro** database, the selected functional amino acid region types included: **"Domain"**, **"Repeat"**, **"Active_site"**, **"Binding_site"**, **"Conserved_site"**, and **"Ptm"** (Note: **"Homologous_superfamily"** and **"Family"** were not included in the calculations, as they belong to classification-level special sequence fragments).
-
-Here is the code [detail](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Identification%20and%20computational%20methods%20of%20functional%20amino%20acid%20regions).
 
 ### Related Works
 
