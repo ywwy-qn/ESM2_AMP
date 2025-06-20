@@ -1,1 +1,1 @@
-Please download and extract the files **cls_segment_eos_AutoEncoder_model.pth**, **cls_segment_eos_AE_RF_model.pkl**, and **cls_segment_eos_AE_DNN_model.pth** from the file **9.cls_segment_eos_model_weights.zip** on figshare, then place them here.
+Please download and extract the files **cls_segment_eos_AutoEncoder_model.pth**, **cls_segment_eos_AE_RF_model.pkl**, and **cls_segment_eos_AE_DNN_model.pth** from the file **9.cls_segment_eos_model_weights.zip** on [figshare](https://figshare.com/articles/dataset/ESM2_AMP/28378157), then place them here.
