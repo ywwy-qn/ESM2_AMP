@@ -2,9 +2,9 @@ import torch
 import torch.nn as nn
 from torch.nn.init import kaiming_normal_
 
-#encoder_layer实例化
+# encoder_layer instantiation
 encoder_layer = nn.TransformerEncoderLayer(d_model=1280, nhead=8,norm_first=True, batch_first=True, dropout=0.3)
-# 定义MLP类
+# MLP class
 class AMP_model(nn.Module):
     def __init__(self, input_dim=1280, hidden1_dim=512, hidden2_dim=128, output_dim=1, encoder_type='transformer'):
         super(AMP_model, self).__init__()
@@ -12,10 +12,10 @@ class AMP_model(nn.Module):
         self.encoder_type = encoder_type.lower()
         
         if self.encoder_type == 'transformer':
-            # Transformer编码器
+            # Transformer encoder
             self.transformer_encoder = nn.TransformerEncoder(encoder_layer, num_layers=6)
         elif self.encoder_type == 'gru':
-            # GRU编码器
+            # GRU encoder
             self.gru = nn.GRU(
                 input_size=input_dim, 
                 hidden_size=input_dim, 
@@ -26,7 +26,7 @@ class AMP_model(nn.Module):
         elif self.encoder_type != 'mean':
             raise ValueError("Unsupported encoder type. Choose from 'transformer', 'gru', or 'mean'.")
         
-        # 定义MLP层
+        # MLP layers
         self.mlp_layers = nn.Sequential(
             nn.Linear(input_dim, hidden1_dim),
             nn.ReLU(),
@@ -35,14 +35,14 @@ class AMP_model(nn.Module):
             nn.Linear(hidden2_dim, output_dim)
         )
         
-        # 应用Kaiming初始化到所有线性层
+        # Apply Kaiming to initialize all linear layers
         for m in self.mlp_layers.modules():
             if isinstance(m, nn.Linear):
                 kaiming_normal_(m.weight.data, a=0, mode='fan_in', nonlinearity='relu')
                 if m.bias is not None:
                     nn.init.constant_(m.bias.data, 0)
         
-        # 对GRU层进行初始化（可选）
+        # Initialize the GRU layer
         if self.encoder_type == 'gru':
             for name, param in self.gru.named_parameters():
                 if 'weight_ih' in name:
@@ -54,18 +54,16 @@ class AMP_model(nn.Module):
     
     def forward(self, X):
         if self.encoder_type == 'mean':
-            # 直接全局平均池化
+            # Direct global average pooling
             pooled = torch.mean(X, dim=1)
         else:
-            # 通过编码器
             if self.encoder_type == 'transformer':
                 encoded = self.transformer_encoder(X)  # (batch, seq, d_model)
             elif self.encoder_type == 'gru':
                 encoded, _ = self.gru(X)  # (batch, seq, d_model)
-            # 序列池化
+                
             pooled = torch.mean(encoded, dim=1)  # (batch, d_model)
             
-        # MLP前向传播
         return self.mlp_layers(pooled)
 
 
