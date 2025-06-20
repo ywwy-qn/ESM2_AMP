@@ -12,3 +12,4 @@ ESM2_GRU: The transformer module is replaced with **GRU**. When encoder_type == 
 
 Ablation experiment: In the **ablation experiment**, we removed the transformer encoder part and only included the global pooling operation. Therefore, in this model, encoder_type == 'mean'.
 
+The function encapsulation in the **check** script for the validation of the model and the saving of parameters during training, etc.
