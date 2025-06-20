@@ -3,7 +3,7 @@
 # from .train import train_model
 # from .check import model_check
 
-# __all__ = ['AMP_model', 'AMPDataset', 'train_model', 'model_check']
+
 
 
 from AMPmodel.model import AMP_model
