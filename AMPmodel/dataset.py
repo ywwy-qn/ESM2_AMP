@@ -30,7 +30,6 @@ def load_dataset(mode='split',
     protein_feature = pd.read_hdf(feature_file, key='df')
     test_sample = pd.read_excel(sample_file)
 
-    # 设定模式相关内容
     if mode == 'split':
         patterns = [r'ESM2_cls\d+', r'ESM2_eos\d+', r'ESM2_segment\d+']
         reshape_shape = (-1, 24, 1280)
@@ -44,13 +43,11 @@ def load_dataset(mode='split',
         reshape_shape = None
         feature_prefix = 'ESM2_'
 
-    # 提取所需特征列（包括 Entry）
     feature_columns = ['Entry']
     for pattern in patterns:
         feature_columns += [col for col in protein_feature.columns if re.match(pattern, col)]
     feature_all = protein_feature[feature_columns]
 
-    # 合并两个蛋白质的特征
     test_sample = pd.merge(test_sample, feature_all, how='left',
                            left_on='Protein1', right_on='Entry')
     test_sample = test_sample.rename(columns=lambda x: '1_' + x if x.startswith(feature_prefix) else x)
@@ -61,17 +58,14 @@ def load_dataset(mode='split',
     test_sample = test_sample.rename(columns=lambda x: '2_' + x if x.startswith(feature_prefix) else x)
     test_sample = test_sample.rename(columns={'Entry': 'Entry2'})
 
-    # 删除 Entry 列
     test_sample = test_sample.drop(columns=['Entry1', 'Entry2'])
 
-    # 空值检查
     if test_sample.isnull().values.any():
         print("The features of test_sample contain null values. Dropping them...")
         test_sample = test_sample.dropna()
     else:
         print("No null values.")
 
-    # 提取特征列和标签
     feature_columns = [col for col in test_sample.columns if col.startswith('1_' + feature_prefix) or col.startswith('2_' + feature_prefix)]
     data_features = test_sample[feature_columns]
     data_label = test_sample[['Label']]
