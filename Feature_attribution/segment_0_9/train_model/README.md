@@ -1,1 +1,1 @@
-Please download and extract the files **Seg_AutoEncoder_model.pth**, **seg_best_rf_model.pkl**, and **Segment_ae_DNN_model.pth** from the file **8.segment_model_weights.zip** on figshare, then place them here.
+Please download and extract the files **Seg_AutoEncoder_model.pth**, **seg_best_rf_model.pkl**, and **Segment_ae_DNN_model.pth** from the file **8.segment_model_weights.zip** on [figshare](https://figshare.com/articles/dataset/ESM2_AMP/28378157), then place them here.
