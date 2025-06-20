@@ -27,7 +27,7 @@ feature_extractor = Esm2LastHiddenFeatureExtractor(tokenizer, model,
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-file_path = os.path.join('esm2_infer_feature/data/real_test_dataset_protein.xlsx')
+file_path = os.path.join('esm2_infer_feature/data/protein_example.xlsx')
 PPI_protein = pd.read_excel(file_path)
 
 df = PPI_protein
