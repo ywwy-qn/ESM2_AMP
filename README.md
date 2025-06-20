@@ -407,7 +407,7 @@ To explore the potential association between feature attention weights and speci
 - When analyzing based on the **UniProt** database, the selected functional amino acid region types included: **"Domain"**, **"Region"**, **"Compositional bias"**, **"Repeat"**, and **"Motif"**.
 - When analyzing based on the **InterPro** database, the selected functional amino acid region types included: **"Domain"**, **"Repeat"**, **"Active_site"**, **"Binding_site"**, **"Conserved_site"**, and **"Ptm"** (Note: **"Homologous_superfamily"** and **"Family"** were not included in the calculations, as they belong to classification-level special sequence fragments).
 
-Here is the code [detail](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Identification%20and%20computational%20methods%20of%20functional%20amino%20acid%20regions).
+Here is the code [detail](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Identification_computational_methods_of_functional_AA_regions/code).
 
 This section focuses on quantifying the attention weights of the ESM2_AMPS model that only contains segment features, followed by detailed calculations of the coverage and hit rates of functional amino acid regions in each segment of the samples in the independent test set.
 
