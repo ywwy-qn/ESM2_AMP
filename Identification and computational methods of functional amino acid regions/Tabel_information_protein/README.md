@@ -1,1 +1,0 @@
-This directory provides information related to the functional amino acid sequences of the provided proteins, which is used to associate the functional amino acid sequence regions based on their characteristic importance.
