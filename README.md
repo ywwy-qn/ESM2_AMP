@@ -153,7 +153,7 @@ We performed dimensionality reduction on the extracted ESM2 protein feature repr
  ```python
  flattened_data = feature_all.reshape(-1, 1280)
  ```
-2.AE model design and pretraining (For detailed model information, refer to the [Autoencoder_pretraining](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Feature%20attribution/Autoencoder_pretraining.py) code in the **Feature attribution** module). After obtaining the model weight file, input the data and set the hidden layer output to obtain the dimensionality-reduced features corresponding to the proteins.
+2.AE model design (For detailed model information, refer to the [Autoencoder_model](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Feature_attribution/Autoencoder_model.py) code in the **Feature_attribution** module). After obtaining the model weight file, input the data and set the hidden layer output to obtain the dimensionality-reduced features corresponding to the proteins.
 
  ```python
  with torch.no_grad():
@@ -219,7 +219,7 @@ We performed dimensionality reduction on the extracted ESM2 protein feature repr
  # delete redundant information
  protein_pairs = protein_pairs.drop(columns=['new_name1', 'new_name2'])
  ```
-5.Random Forest model design and train. Tree SHAP is an interpretability method that relies on decision tree models, and we adopt the Random Forest model. The model design code can be found in the [RF](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Feature%20attribution/RF.py) file within the **Feature Attribution** module. The process of training the RF model and saving the model weights is as follows:
+5.Random Forest model design and train. Tree SHAP is an interpretability method that relies on decision tree models, and we adopt the Random Forest model. The process of training the RF model and saving the model weights is as follows:
 
  ```python
  study = optuna.create_study(direction='maximize')
