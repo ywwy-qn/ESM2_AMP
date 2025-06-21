@@ -123,7 +123,7 @@ python AMPmodel_explainable/Attention_explainable/ESM2_AMPS_attention_weights_vi
 python AMPmodel_explainable/Attention_explainable/ESM2_AMP_CSE_attention_weights_visualization.py
 ```
 
-2.Integrated_Gradients for ESM2_AMPS and ESM2_AMP_CSE
+2.[Integrated_Gradients](https://github.com/ywwy-qn/ESM2_AMP/tree/main/AMPmodel_explainable/Integrated_Gradients) for ESM2_AMPS and ESM2_AMP_CSE
 The Integrated Gradients (IG) method was used to compute feature importance values for both models, followed by analysis.
 
 ### ESM2_AMPS model Integrated Gradients and visualization
