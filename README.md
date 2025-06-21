@@ -85,7 +85,7 @@ python model_pred/ESM2_AMP_CSE_pred.py
 ```bash
 python model_pred/ESM2_DPM_pred.py
 ```
-对比模型
+
 
 
 
@@ -453,7 +453,6 @@ After running the scripts, the features' file will be saved in the **output** di
 **Note:** If you want to extract the features of your proteins, you can replace the sample data in **data** with your own data and then run the script to achieve it.
 
 
-##### 截至到这里
 
 
 
