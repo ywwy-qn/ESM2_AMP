@@ -139,7 +139,7 @@ python AMPmodel_explainable/Integrated_Gradients/ESM2_AMP_CSE_IG_attribution.py
 **Note:** Since the baseline is calculated by randomly selected samples when computing the IG values, the final IG values may vary. However, the fundamental point we aim to convey remains valid.
 
 ## Feature attribution
-Including [segment0-9](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Feature_attribution/segment_0_9) features and cls_segment_eos features.
+Including [segment0-9](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Feature_attribution/segment_0_9) features and [cls_segment_eos](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Feature_attribution/cls_segment_eos) features.
 
 #### model constructing
 
