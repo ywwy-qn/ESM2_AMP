@@ -263,7 +263,7 @@ We performed dimensionality reduction on the extracted ESM2 protein feature repr
  shap_values = init_shap_analysis(model, X_test)
  ```
 
-7. DNN model design. Integrated Gradient is an interpretability method that relies on decision tree models, and we adopt the DNN model. The model design code can be found in the [DNN](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Feature%20attribution/DNN.py) file within the **Feature Attribution** module. The process of training the DNN model is as follows:
+7. DNN model design. Integrated Gradient is an interpretability method that relies on decision tree models, and we adopt the DNN model. The model design code can be found in the DNN file within the **Feature Attribution** module.
  ```python
  class DNN(nn.Module):
     def __init__(self, input_dim=3000, hidden1_dim=1500, hidden2_dim=500, output_dim=1):
@@ -471,19 +471,9 @@ After running the scripts, the features' file will be saved in the **output** di
 **Note:** If you want to extract the features of your proteins, you can replace the sample data in **data** with your own data and then run the script to achieve it.
 
 
-
-
-
-
-
-
-
-
 **Important Notes**:  
-• The provided data is example data. For personal data usage, strictly follow the format and data types of the [sample data](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Dataset_work/dataset/Sample_dataset).  
-
-• For model inference, if you need to specify custom model weights, use the `--model_w` parameter in Step 2. The weight file could be foud on [figshare](https://figshare.com/articles/dataset/ESM2_AMP/28378157).
-
+  
+  • For model inference, the weight file could be foud on [figshare](https://figshare.com/articles/dataset/ESM2_AMP/28378157).
 
 
 
