@@ -66,7 +66,6 @@ ESM2_DPM: The global pooling features of the sequence are selected, referred to 
 
 ESM2_GRU: The transformer module is replaced with **GRU**. When encoder_type == 'gru', it becomes the ESM2_GRU model.
 
-Ablation experiment: In the **ablation experiment**, we removed the transformer encoder part and only included the global pooling operation. Therefore, in this model, encoder_type == 'mean'.
 
 The function encapsulation in the **AMPmodel/check** script for the evalution of the model and the saving of parameters during training, etc.
 
@@ -86,9 +85,27 @@ python model_pred/ESM2_AMP_CSE_pred.py
 python model_pred/ESM2_DPM_pred.py
 ```
 
+## Comparison_model
+During this process, we trained, validated, and tested the ESM2_AMPS and ESM2_GRU models on the **Bernett dataset**.
 
+We have provided the trained model weight files on [figshare](https://figshare.com/articles/dataset/ESM2_AMP/28378157) for prediction purposes. These two weight files are saved as **5.ESM2_AMPS_Bernett.zip** and **6.ESM2_GRU_Bernett.zip**, respectively.
 
+The testing script is as follows:
+```bash
+python Comparison_model/ESM2_AMPS_Bernett/Train_test.py
+python Comparison_model/ESM2_GRU_Bernett/Train_test_GRU.py
+```
 
+We have also provided the **training** code for implementation. After running the script, the model weight files will be saved in the following directories:
+
+-Comparison_model/ESM2_AMPS_Bernett/weights_file/bestcheckpoint
+-Comparison_model/ESM2_GRU_Bernett/weights_file/bestcheckpoint
+
+The training and validation scripts are as follows:
+```bash
+python Comparison_model/ESM2_AMPS_Bernett/Train_val.py
+python Comparison_model/ESM2_GRU_Bernett/Train_val_GRU.py
+```
 
 
 ## AMPmodel_explainable
