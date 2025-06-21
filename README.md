@@ -110,7 +110,7 @@ python Comparison_model/ESM2_GRU_Bernett/Train_val_GRU.py
 
 ## AMPmodel_explainable
 
-1.Attention-based Explainable Analysis (Attention_explainable)
+1.Attention-based Explainable Analysis ([Attention_explainable](https://github.com/ywwy-qn/ESM2_AMP/tree/main/AMPmodel_explainable/Attention_explainable))
 Both models within the **ESM2_AMP** framework utilize the multi-head attention mechanism of the Transformer encoder. By leveraging the weight matrix allocation in the multi-head attention mechanism, the attention weights corresponding to the sample features are extracted, and their feature importance is calculated and quantified.
 
 ### ESM2_AMPS model Attention weights and visualization
