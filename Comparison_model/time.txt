@@ -1,0 +1,7 @@
+Training and inference time consumption
+The training and inference time of ESM2_AMPS and ESM2_GRU models were evaluated on the Bernett dataset, with training conducted on 2 NVIDIA V100 GPUs in parallel (35 epochs total) and inference performed on an NVIDIA A100 GPU. 
+Results indicate ESM2_AMPS required 9,535.059 seconds for training and 65.31 seconds for inference, while ESM2_GRU completed training in 8,305.269 seconds with 62.26 seconds inference time.
+
+For feature extraction using ESM2, processing times were measured with different length constraints on protein sequences.
+  When limiting sequences to 512 amino acids (13,300 proteins processed on an NVIDIA A100), the computation time was 3,243.32 seconds. 
+For sequences between 512-1,024 amino acids (5,600 proteins), the inference time was 1,613.47 seconds.
