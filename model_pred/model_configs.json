@@ -1,0 +1,32 @@
+{
+    "ESM2_AMPS": {
+        "feature": "seg",
+        "feature_shape": [-1, 20, 1280],
+        "mode": "transformer",
+        "hidden1": 480,
+        "hidden2": 240,
+        "weight": ["ESM2_AMPS.pth"],
+        "weight_url": "https://figshare.com/articles/dataset/ESM2_AMP/28378157",
+        "weight_file": "ESM2_AMPS.pth"
+    },
+    "ESM2_GRU": {
+        "feature": "seg",
+        "feature_shape": [-1, 20, 1280],
+        "mode": "gru",
+        "hidden1": 590,
+        "hidden2": 255,
+        "weight": ["ESM2_GRU_B.pth"],
+        "weight_url": "https://figshare.com/articles/dataset/ESM2_AMP/28378157",
+        "weight_file": "ESM2_GRU_B.pth"
+    },
+    "ESM2_AMP_CSE": {
+        "feature": "split",
+        "feature_shape": [-1, 24, 1280],
+        "mode": "transformar",
+        "hidden1": 480,
+        "hidden2": 240,
+        "weight": ["ESM2_AMP_CSE.pth"],
+        "weight_url": "https://figshare.com/articles/dataset/ESM2_AMP/28378157",
+        "weight_file": "ESM2_AMP_CSE.pth"
+    }
+}
