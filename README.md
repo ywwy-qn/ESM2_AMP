@@ -485,9 +485,7 @@ During model training, Optuna is primarily employed for **Bayesian optimization-
 - **ESM2_AMP_CSE** model maintained these parameters but extended the weight decay range to 1e-4-1e-1. Here are the code details and [result](https://github.com/ywwy-qn/ESM2_AMP/blob/main/model_pred/ESM2_AMP_CSE_config.yaml).
 - In **ESM2_DPM** model training process, the learning rate was tuned within the range of 1e-6 to 1e-5, while the weight decay was adjusted between 1e-3 and 1e-1. For the DNN module, the first hidden layer size varied from 960 to 1280 with a step size of 320, the second hidden layer size was explored from 320 to 640 with a step size of 160, and the last layer was 40 to 160 with 60 steps. Here are the code details and [result](https://github.com/ywwy-qn/ESM2_AMP/blob/main/model_pred/ESM2_DPM_config.yaml).
 
-
-
-Taking the training of the ESM2_AMPS model as an example, the following is the detailed code for parameter tuning.
+Taking the training of the ESM2_AMPS model as an example, the following is the detailed code for parameter tuning using **optuna**.
 
 ``` python
     lr = trial.suggest_loguniform('lr', 1e-5, 1e-3)
@@ -495,6 +493,15 @@ Taking the training of the ESM2_AMPS model as an example, the following is the d
     hidden1_dim = trial.suggest_int('hidden1_dim', low=480, high=640, step=160)
     hidden2_dim = trial.suggest_int('hidden2_dim', low=80, high=320, step=80)
 ```
+
+
+The specific training process is as follows:
+
+1.ESM2_AMPS model training
+
+
+
+**Note:** Due to the large size of the training dataset, considering the complexity of reading the data and the preprocessing steps, the processed features of protein pairs will be directly received here instead of performing preprocessing operations on the protein features. This will save a certain amount of time.
 
 ### Related Works
 
