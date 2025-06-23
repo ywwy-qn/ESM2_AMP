@@ -1,1 +1,0 @@
-from .ESM2_fr import Esm2LastHiddenFeatureExtractor
