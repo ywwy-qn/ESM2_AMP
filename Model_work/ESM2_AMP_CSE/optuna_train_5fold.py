@@ -179,7 +179,13 @@ def train_model(trial):
         all_5_f1_list.append(f1_list)
         all_5_auc_list.append(auc_list)
         
-        logging.info(f"Fold {fold_count} completed with validation MCC: {calculate_cv_loss(avg_mcc_list):.4f}, Accuracy = {calculate_cv_loss(accuracy_list):.4f}, Recall = {calculate_cv_loss(recall_list):.4f}, F1 Score = {calculate_cv_loss(f1_list):.4f}, AUC = {calculate_cv_loss(auc_list):.4f}")
+        logging.info(
+    f"Fold {fold_count} completed with "
+    f"MCC: {np.mean(avg_mcc_list):.4f}, "
+    f"Accuracy: {np.mean(accuracy_list):.4f}, "
+    f"F1: {np.mean(f1_list):.4f}, "
+    f"AUC: {np.mean(auc_list):.4f}"
+)
         trial.set_user_attr(f'fold_{fold_count}_step_loss_records', step_loss_records)
         fold_count += 1  # Increment fold counter
 
