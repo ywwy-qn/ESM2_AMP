@@ -481,6 +481,9 @@ After running the scripts, the features' file will be saved in the **output** di
 
 During model training, Optuna is primarily employed for **Bayesian optimization-based hyperparameter selection using the Tree-structured Parzen Estimator (TPE) algorithm**, with key details as follows:
 
+The training process code is in the [Model_work](https://github.com/ywwy-qn/ESM2_AMP/tree/main/Model_work) directory.
+
+
 - In **ESM2_AMPS** model training process, the learning rate was tuned within the range of 1e-5 to 1e-3, while the weight decay was adjusted between 1e-4 and 1e-2. For the MLP module, the first hidden layer size was varied from 480 to 640 with a step size of 160, and the second hidden layer size was explored from 80 to 320 with a step size of 80. Here are the code [details](https://github.com/ywwy-qn/ESM2_AMP/blob/main/Model_work/ESM2_AMPS/optuna_train_5fold.py) and [result](https://github.com/ywwy-qn/ESM2_AMP/blob/main/model_pred/ESM2_AMPS_config.yaml).
 - **ESM2_AMP_CSE** model maintained these parameters but extended the weight decay range to 1e-4-1e-1. Here are the code details and [result](https://github.com/ywwy-qn/ESM2_AMP/blob/main/model_pred/ESM2_AMP_CSE_config.yaml).
 - In **ESM2_DPM** model training process, the learning rate was tuned within the range of 1e-6 to 1e-5, while the weight decay was adjusted between 1e-3 and 1e-1. For the DNN module, the first hidden layer size varied from 960 to 1280 with a step size of 320, the second hidden layer size was explored from 320 to 640 with a step size of 160, and the last layer was 40 to 160 with 60 steps. Here are the code details and [result](https://github.com/ywwy-qn/ESM2_AMP/blob/main/model_pred/ESM2_DPM_config.yaml).
@@ -498,6 +501,22 @@ Taking the training of the ESM2_AMPS model as an example, the following is the d
 The specific training process is as follows:
 
 1.ESM2_AMPS model training
+``` bash
+    python Model_work/ESM2_AMPS/optuna_train_5fold.py
+```
+The relevant results of the training will be saved in the **Model_work/ESM2_AMPS/output** directory.
+
+2.ESM2_AMP_CSE model training
+``` bash
+    python Model_work/ESM2_AMP_CSE/optuna_train_5fold.py
+```
+The relevant results of the training will be saved in the **Model_work/ESM2_AMP_CSE/output** directory.
+
+1.ESM2_DPM model training
+``` bash
+    python Model_work/ESM2_DPM/optuna_train_5fold.py
+```
+The relevant results of the training will be saved in the **Model_work/ESM2_DPM/output** directory.
 
 
 
